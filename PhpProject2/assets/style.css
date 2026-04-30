@@ -1,0 +1,273 @@
+/* 1. Global Reset & Variables */
+:root {
+    --primary-blue: #007bff;
+    --dark-blue: #0056b3;
+    --light-blue: #e3f2fd;
+    --bg-color: #f8fbff;
+    --text-color: #333;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 2. Navigation Bar - Task 2 */
+.navbar {
+    background-color: var(--primary-blue);
+    padding: 1rem 0;
+    color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--white);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--light-blue);
+}
+
+/* 3. Hero Section & Search - Task 1.3 */
+.hero {
+    background: linear-gradient(rgba(2, 136, 209, 0.8), rgba(2, 136, 209, 0.8));
+    padding: 100px 0;
+    text-align: center; /* Centers the H1 text */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the form horizontally */
+    justify-content: center;
+    color: white;
+}
+
+.search-bar {
+    margin-top: 30px;
+    display: flex;
+    width: 100%;
+    max-width: 600px; /* Limits width so it doesn't stretch too far */
+    gap: 0; /* Joins input and button */
+}
+
+.search-bar input {
+    flex: 1; /* Makes input take up available space */
+    padding: 15px;
+    border: none;
+    border-radius: 25px 0 0 25px; /* Rounded left corners */
+    font-size: 16px;
+}
+
+.search-bar button {
+    padding: 15px 30px;
+    background-color: #004d40; /* Contrast color for visibility */
+    color: white;
+    border: none;
+    border-radius: 0 25px 25px 0; /* Rounded right corners */
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 4. Recipe Grid & Cards - Task 1.2 */
+.section-title {
+    margin: 40px 0 20px;
+    text-align: center;
+    color: var(--dark-blue);
+}
+
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.recipe-card {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+}
+
+.recipe-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.view-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: var(--primary-blue);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* 5. Authentication Forms - Task 1.1 */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Keeps it centered vertically */
+    padding: 20px;
+}
+
+.styled-form {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+/* Modern Input Styling */
+.input-wrapper input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 2px solid #e3f2fd;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-wrapper input:focus {
+    border-color: #007bff;
+}
+
+/* The New Gradient Button Shape */
+.btn-gradient {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 30px; /* Fully rounded sides */
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px); /* Lifts the button slightly */
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+}
+
+.btn-gradient:active {
+    transform: translateY(0);
+}
+
+.form-footer {
+    margin-top: 20px;
+    font-size: 0.85rem;
+}
+
+.form-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* 6. Footer - Task 2 */
+.site-footer {
+    background-color: #333;
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: 50px;
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    font-size: 0.9rem;
+}
+
+/* Ensure the auth container can grow for longer forms */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh; /* Slightly taller for the register form */
+    padding: 40px 20px;
+}
+
+/* Ensure consistent text for the footer link */
+.form-footer p {
+    margin-top: 15px;
+    color: #555;
+}
+
+/* Form transition for a smooth professional feel */
+.styled-form {
+    transition: all 0.3s ease-in-out;
+}
