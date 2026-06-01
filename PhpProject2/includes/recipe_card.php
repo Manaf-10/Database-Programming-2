@@ -1,5 +1,6 @@
 <?php
-$avgRating = isset($row['AvgRating']) && $row['AvgRating'] !== null ? number_format((float) $row['AvgRating'], 1) : 'No ratings';
+$hasRatings = isset($row['RatingCount']) && (int) $row['RatingCount'] > 0;
+$avgRating = $hasRatings ? number_format((float) $row['AvgRating'], 1) : 'No ratings';
 $imagePath = !empty($row['ImagePath']) ? $row['ImagePath'] : 'default.jpg';
 $createdAt = !empty($row['CreatedAt']) ? date('M d, Y', strtotime($row['CreatedAt'])) : '';
 ?>

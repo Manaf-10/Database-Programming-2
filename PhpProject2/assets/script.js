@@ -9,7 +9,26 @@ $(document).ready(function() {
     }
 
     function updateLatestVisibility(page) {
-        $('#latest-recipes-section').toggleClass('d-none', page > 1);
+        const latestCollapse = document.getElementById('latestRecipesCollapse');
+        const latestToggle = document.querySelector('.latest-toggle');
+
+        if (!latestCollapse || !window.bootstrap) {
+            return;
+        }
+
+        const collapse = bootstrap.Collapse.getOrCreateInstance(latestCollapse, { toggle: false });
+
+        if (page > 1) {
+            collapse.hide();
+            if (latestToggle) {
+                latestToggle.setAttribute('aria-expanded', 'false');
+            }
+        } else {
+            collapse.show();
+            if (latestToggle) {
+                latestToggle.setAttribute('aria-expanded', 'true');
+            }
+        }
     }
 
     function loadRecipes(page) {
@@ -56,11 +75,9 @@ $(document).ready(function() {
 
     $('.sort-btn').on('click', function() {
         const sort = $(this).data('sort');
-        const currentSort = $('#sort-input').val();
-        const nextSort = currentSort === sort ? '' : sort;
 
-        $('#sort-input').val(nextSort);
-        updateSortButtons(nextSort);
+        $('#sort-input').val(sort);
+        updateSortButtons(sort);
         loadRecipes(1);
     });
 

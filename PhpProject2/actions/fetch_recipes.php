@@ -47,7 +47,7 @@ if ($dateFrom !== '') {
 $whereSql = implode(' AND ', $conditions);
 $orderBy = 'r.CreatedAt DESC';
 if ($sort === 'popular') {
-    $orderBy = 'r.Views DESC, AvgRating DESC, r.CreatedAt DESC';
+    $orderBy = 'r.Views DESC, r.CreatedAt DESC';
 } elseif ($sort === 'top_rated') {
     $orderBy = 'AvgRating DESC, r.Views DESC, r.CreatedAt DESC';
 }
@@ -69,8 +69,9 @@ if ($page > $totalPages) {
     $offset = ($page - 1) * $perPage;
 }
 
-$sql = "SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, r.CreatedAt, u.Username,
-               AVG(rt.RatingValue) AS AvgRating
+$sql = "SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, r.CreatedAt AS CreatedAt, u.Username,
+               COALESCE(AVG(rt.RatingValue), 0) AS AvgRating,
+               COUNT(rt.RatingID) AS RatingCount
         FROM dbProj_Recipes r
         JOIN dbProj_Users u ON r.UserID = u.UserID
         LEFT JOIN dbProj_Ratings rt ON r.RecipeID = rt.RecipeID

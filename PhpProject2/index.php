@@ -9,7 +9,7 @@ $category = trim($_GET['category'] ?? '');
 $dateFrom = trim($_GET['date_from'] ?? '');
 $sort = $_GET['sort'] ?? '';
 $page = max(1, (int) ($_GET['page'] ?? 1));
-$showLatest = $page === 1;
+$latestOpen = $page === 1;
 
 $categories = [];
 $categoryStmt = $mysqli->prepare("SELECT DISTINCT Category FROM dbProj_Recipes WHERE Category IS NOT NULL AND Category <> '' ORDER BY Category");
@@ -20,8 +20,9 @@ while ($cat = $categoryResult->fetch_assoc()) {
 }
 
 $latestStmt = $mysqli->prepare(
-    "SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, r.CreatedAt, u.Username,
-            AVG(rt.RatingValue) AS AvgRating
+    "SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, r.CreatedAt AS CreatedAt, u.Username,
+            COALESCE(AVG(rt.RatingValue), 0) AS AvgRating,
+            COUNT(rt.RatingID) AS RatingCount
      FROM dbProj_Recipes r
      JOIN dbProj_Users u ON r.UserID = u.UserID
      LEFT JOIN dbProj_Ratings rt ON r.RecipeID = rt.RecipeID
@@ -63,18 +64,27 @@ $latestRecipes = $latestStmt->get_result();
     </form>
 </section>
 
-<section id="latest-recipes-section" class="mb-4 <?php echo $showLatest ? '' : 'd-none'; ?>">
+<section id="latest-recipes-section" class="mb-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">Latest Recipes</h2>
+        <button class="btn btn-link text-success text-decoration-none p-0 h4 mb-0 latest-toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#latestRecipesCollapse"
+                aria-expanded="<?php echo $latestOpen ? 'true' : 'false'; ?>"
+                aria-controls="latestRecipesCollapse">
+            Latest Recipes
+        </button>
     </div>
-    <div class="row">
-        <?php if ($latestRecipes->num_rows > 0): ?>
-            <?php while ($row = $latestRecipes->fetch_assoc()): ?>
-                <?php include __DIR__ . '/includes/recipe_card.php'; ?>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="col-12"><div class="alert alert-info">No latest recipes found.</div></div>
-        <?php endif; ?>
+    <div class="collapse <?php echo $latestOpen ? 'show' : ''; ?>" id="latestRecipesCollapse">
+        <div class="row">
+            <?php if ($latestRecipes->num_rows > 0): ?>
+                <?php while ($row = $latestRecipes->fetch_assoc()): ?>
+                    <?php include __DIR__ . '/includes/recipe_card.php'; ?>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="col-12"><div class="alert alert-info">No latest recipes found.</div></div>
+            <?php endif; ?>
+        </div>
     </div>
 </section>
 

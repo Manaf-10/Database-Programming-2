@@ -52,4 +52,4 @@ $pathPrefix = in_array($currentDir, ['admin', 'creator'], true) ? '../' : '';
             </div>
         </div>
     </nav>
-    <main class="container mt-4">
+    <main class="container mt-4 flex-grow-1">
