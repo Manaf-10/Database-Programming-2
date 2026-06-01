@@ -1,31 +1,21 @@
 <?php
-require_once '../includes/header.php';
+require_once '../includes/Header.php';
 
 if (!checkRole('Admin')) {
     header('Location: ../login.php');
     exit;
 }
 
-$popularRecipes = $mysqli->query('CALL sp_GetPopularRecipes()');
+$popularStmt = $mysqli->prepare('SELECT Title, Views FROM dbProj_Recipes ORDER BY Views DESC LIMIT 5');
+$popularStmt->execute();
+$popularRecipes = $popularStmt->get_result();
 
-if ($popularRecipes) {
-    $popularRows = $popularRecipes->fetch_all(MYSQLI_ASSOC);
-    $popularRecipes->free();
-    while ($mysqli->more_results() && $mysqli->next_result()) {
-        if ($extraResult = $mysqli->store_result()) {
-            $extraResult->free();
-        }
-    }
-} else {
-    $popularRows = [];
-}
-
-$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_Users ORDER BY CreatedAt DESC');
+$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_Userss ORDER BY CreatedAt DESC');
 
 $creatorReport = null;
 if (!empty($_GET['creator_id'])) {
     $creatorId = (int) $_GET['creator_id'];
-    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_Users u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
+    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_User u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
     $stmt->bind_param('i', $creatorId);
     $stmt->execute();
     $creatorReport = $stmt->get_result();
@@ -103,4 +93,4 @@ if (!empty($_GET['creator_id'])) {
     </div>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once '../includes/Footer.php'; ?>

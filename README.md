@@ -33,7 +33,11 @@ The PHP code now matches the table and column names from `sql codes.txt`:
 - Recipe image column: `ImagePath`
 - Recipe description column: `Description`
 
+<<<<<<< HEAD
 Old names such as `dbProj_User`, `dbProj_users`, `dbProj_recipes`, `RoleID`, `ShortDescription`, and `MainImage` were removed from the PHP code.
+=======
+Old names such as `dbProj_Users`, `dbProj_recipes`, `RoleID`, `ShortDescription`, and `MainImage` were removed from the PHP code.
+>>>>>>> 9f7a98f9999d009256fc4a0ad4efb3e61eee2465
 
 ## Project Task Status
 
@@ -41,7 +45,7 @@ Old names such as `dbProj_User`, `dbProj_users`, `dbProj_recipes`, `RoleID`, `Sh
 | --- | --- | --- | --- |
 | 1.1 | Sign-up functionality | Finished | `register.php` inserts into `dbProj_Users`. |
 | 1.1 | Login functionality | Finished | `login.php` verifies password hashes and redirects by role. |
-| 1.1 | Session management | Finished | Shared session logic is in `includes/header.php`. |
+| 1.1 | Session management | Finished | Shared session logic is in `includes/Header.php`. |
 | 1.1 | JavaScript validation | Finished | Registration includes browser-side validation. |
 | 1.1 | Server-side validation | Finished | Login, registration, recipe creation, comments, and ratings validate inputs. |
 | 1.1 | Encrypted passwords | Finished | `password_hash()` and `password_verify()` are used. |

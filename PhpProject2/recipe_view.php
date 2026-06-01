@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.php';
+require_once 'includes/Header.php';
 
 if (!isset($_GET['id'])) {
     header('Location: index.php');
@@ -40,7 +40,7 @@ $recipe = $stmt->get_result()->fetch_assoc();
 
 if (!$recipe) {
     echo "<div class='alert alert-warning'>Recipe not found.</div>";
-    require_once 'includes/footer.php';
+    require_once 'includes/Footer.php';
     exit;
 }
 
@@ -141,4 +141,4 @@ $canEdit = isLoggedIn() && ((int) $_SESSION['user_id'] === (int) $recipe['UserID
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once 'includes/Footer.php'; ?>

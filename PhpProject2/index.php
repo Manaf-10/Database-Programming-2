@@ -1,4 +1,9 @@
-<?php require_once 'includes/header.php'; ?>
+<?php
+session_start();
+require_once 'includes/db_connect.php';
+require_once 'includes/Header.php';
+
+?>
 
 <section class="hero-panel mb-4">
     <h1>Discover Delicious Recipes</h1>
@@ -123,4 +128,4 @@ if ($result->num_rows > 0) {
 ?>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once 'includes/Footer.php'; ?>

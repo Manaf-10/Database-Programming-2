@@ -1,5 +1,8 @@
 <?php
-require_once '../includes/header.php';
+
+require_once '../includes/db_connect.php';
+
+require_once '../includes/Header.php';
 
 if (!checkRole('Creator')) {
     header('Location: ../login.php');
@@ -125,4 +128,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once '../includes/Footer.php'; ?>
