@@ -1,4 +1,9 @@
-<?php require_once 'includes/header.php'; ?>
+<?php
+session_start();
+require_once 'includes/db_connect.php';
+require_once 'includes/Header.php';
+
+?>
 
 <section class="hero-panel mb-4">
     <h1>Discover Delicious Recipes</h1>
@@ -66,7 +71,7 @@ if ($dateTo !== '') {
 $orderBy = $sort === 'popular' ? 'r.Views DESC, AvgRating DESC, r.CreatedAt DESC' : 'r.CreatedAt DESC';
 $sql = "SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, u.Username, AVG(rt.RatingValue) AS AvgRating
         FROM dbProj_Recipes r
-        JOIN dbProj_User u ON r.UserID = u.UserID
+        JOIN dbProj_Users u ON r.UserID = u.UserID
         LEFT JOIN dbProj_Ratings rt ON r.RecipeID = rt.RecipeID
         WHERE " . implode(' AND ', $conditions) . "
         GROUP BY r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, u.Username, r.CreatedAt
@@ -104,4 +109,4 @@ if ($result->num_rows > 0) {
 ?>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once 'includes/Footer.php'; ?>

@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.php';
+require_once 'includes/Header.php';
 
 if (!isset($_GET['id'])) {
     header('Location: index.php');
@@ -12,14 +12,14 @@ $stmt = $mysqli->prepare('UPDATE dbProj_Recipes SET Views = Views + 1 WHERE Reci
 $stmt->bind_param('i', $id);
 $stmt->execute();
 
-$stmt = $mysqli->prepare('SELECT r.*, u.Username FROM dbProj_Recipes r JOIN dbProj_User u ON r.UserID = u.UserID WHERE r.RecipeID = ?');
+$stmt = $mysqli->prepare('SELECT r.*, u.Username FROM dbProj_Recipes r JOIN dbProj_Users u ON r.UserID = u.UserID WHERE r.RecipeID = ?');
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $recipe = $stmt->get_result()->fetch_assoc();
 
 if (!$recipe) {
     echo "<div class='alert alert-warning'>Recipe not found.</div>";
-    require_once 'includes/footer.php';
+    require_once 'includes/Footer.php';
     exit;
 }
 
@@ -72,7 +72,7 @@ $imagePath = $recipe['ImagePath'] ?: 'default.jpg';
             <div class="card-header">Comments</div>
             <div class="card-body">
                 <?php
-                $commentStmt = $mysqli->prepare('SELECT c.CommentText, c.CreatedAt, u.Username FROM dbProj_Comments c JOIN dbProj_User u ON c.UserID = u.UserID WHERE c.RecipeID = ? ORDER BY c.CreatedAt DESC');
+                $commentStmt = $mysqli->prepare('SELECT c.CommentText, c.CreatedAt, u.Username FROM dbProj_Comments c JOIN dbProj_Users u ON c.UserID = u.UserID WHERE c.RecipeID = ? ORDER BY c.CreatedAt DESC');
                 $commentStmt->bind_param('i', $id);
                 $commentStmt->execute();
                 $comments = $commentStmt->get_result();
@@ -100,4 +100,4 @@ $imagePath = $recipe['ImagePath'] ?: 'default.jpg';
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once 'includes/Footer.php'; ?>

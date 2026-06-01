@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = trim($_POST['password'] ?? '');
 
     if ($username !== '' && $password !== '') {
-        $stmt = $mysqli->prepare('SELECT UserID, Username, Password, Role FROM dbProj_User WHERE Username = ?');
+        $stmt = $mysqli->prepare('SELECT UserID, Username, Password, Role FROM dbProj_Users WHERE Username = ?');
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require_once 'includes/header.php';
+require_once 'includes/Header.php';
 ?>
 
 <div class="row justify-content-center">
@@ -66,4 +66,4 @@ require_once 'includes/header.php';
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once 'includes/Footer.php'; ?>

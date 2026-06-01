@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/header.php';
+require_once '../includes/Header.php';
 
 if (!checkRole('Admin')) {
     header('Location: ../login.php');
@@ -10,12 +10,12 @@ $popularStmt = $mysqli->prepare('SELECT Title, Views FROM dbProj_Recipes ORDER B
 $popularStmt->execute();
 $popularRecipes = $popularStmt->get_result();
 
-$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_User ORDER BY CreatedAt DESC');
+$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_Userss ORDER BY CreatedAt DESC');
 
 $creatorReport = null;
 if (!empty($_GET['creator_id'])) {
     $creatorId = (int) $_GET['creator_id'];
-    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_User u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
+    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_Userss u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
     $stmt->bind_param('i', $creatorId);
     $stmt->execute();
     $creatorReport = $stmt->get_result();
@@ -93,4 +93,4 @@ if (!empty($_GET['creator_id'])) {
     </div>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once '../includes/Footer.php'; ?>

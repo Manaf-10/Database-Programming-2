@@ -1,19 +1,23 @@
 <?php
-// Local phpMyAdmin/XAMPP defaults. Update these if your deployed server uses
-// different database credentials.
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'dbProj_recipe_db');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$host = 'localhost';
+$user = 'u202303672';
+$pass = 'w6n]l5@dH6CG0J!N';
+$db   = 'db202303672';
 
+// Create the connection object
+$mysqli = new mysqli($host, $user, $pass, $db);
+
+// Check if it failed
 if ($mysqli->connect_error) {
-    die('ERROR: Could not connect. ' . $mysqli->connect_error);
+    die("Connect Error: " . $mysqli->connect_error);
 }
 
-$mysqli->set_charset('utf8mb4');
+// Set charset
+$mysqli->set_charset("utf8mb4");
 
-// Compatibility alias for older files that used $conn.
+// Optional: compatibility for other files
 $conn = $mysqli;
 ?>
