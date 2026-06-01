@@ -8,11 +8,23 @@ require_once 'includes/Header.php';
 <section class="hero-panel mb-4">
     <h1>Discover Delicious Recipes</h1>
     <form action="index.php" method="GET" class="row g-2 mt-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input type="text" name="search" class="form-control" placeholder="Title or ingredient" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <input type="text" name="creator" class="form-control" placeholder="Creator" value="<?php echo htmlspecialchars($_GET['creator'] ?? ''); ?>">
+        </div>
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">All Categories</option>
+                <?php
+                $catRes = $mysqli->query("SELECT DISTINCT Category FROM dbProj_Recipes WHERE Category IS NOT NULL AND Category <> '' ORDER BY Category");
+                while ($cat = $catRes->fetch_assoc()) {
+                    $selected = ($_GET['category'] ?? '') === $cat['Category'] ? 'selected' : '';
+                    echo "<option value='" . htmlspecialchars($cat['Category']) . "' $selected>" . htmlspecialchars($cat['Category']) . "</option>";
+                }
+                ?>
+            </select>
         </div>
         <div class="col-md-2">
             <input type="date" name="date_from" class="form-control" value="<?php echo htmlspecialchars($_GET['date_from'] ?? ''); ?>">
@@ -39,6 +51,7 @@ $types = '';
 
 $searchTerm = trim($_GET['search'] ?? '');
 $creator = trim($_GET['creator'] ?? '');
+$category = trim($_GET['category'] ?? '');
 $dateFrom = trim($_GET['date_from'] ?? '');
 $dateTo = trim($_GET['date_to'] ?? '');
 $sort = $_GET['sort'] ?? '';
@@ -53,6 +66,12 @@ if ($searchTerm !== '') {
 if ($creator !== '') {
     $conditions[] = 'u.Username LIKE ?';
     $params[] = '%' . $creator . '%';
+    $types .= 's';
+}
+
+if ($category !== '') {
+    $conditions[] = 'r.Category = ?';
+    $params[] = $category;
     $types .= 's';
 }
 
