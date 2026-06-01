@@ -1,4 +1,3 @@
-/* 1. Global Reset & Variables */
 :root {
     --primary-blue: #007bff;
     --dark-blue: #0056b3;
@@ -20,6 +19,45 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.hero-panel {
+    background: linear-gradient(135deg, #e8f7ef 0%, #f8fbff 100%);
+    border: 1px solid #d8eee1;
+    border-radius: 8px;
+    padding: 32px;
+}
+
+.recipe-card img,
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.recipe-main-image {
+    max-height: 460px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.star-rating {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.star {
+    color: gray;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
 }
 
 .container {

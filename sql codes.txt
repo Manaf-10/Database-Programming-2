@@ -1,0 +1,77 @@
+-- 1. Create Users Table
+CREATE TABLE IF NOT EXISTS dbProj_User (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Role ENUM('Viewer', 'Creator', 'Admin') DEFAULT 'Viewer',
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 2. Create Recipes Table
+CREATE TABLE IF NOT EXISTS dbProj_Recipes (
+    RecipeID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Ingredients TEXT,
+    Instructions TEXT,
+    ImagePath VARCHAR(255) DEFAULT 'default.jpg',
+    VideoPath VARCHAR(255),
+    Category VARCHAR(50),
+    Views INT DEFAULT 0,
+    RatingSum INT DEFAULT 0,
+    RatingCount INT DEFAULT 0,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status ENUM('Draft', 'Published') DEFAULT 'Published',
+    FOREIGN KEY (UserID) REFERENCES dbProj_User(UserID) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- 3. Create Comments Table
+CREATE TABLE IF NOT EXISTS dbProj_Comments (
+    CommentID INT AUTO_INCREMENT PRIMARY KEY,
+    RecipeID INT NOT NULL,
+    UserID INT NOT NULL,
+    CommentText TEXT NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (RecipeID) REFERENCES dbProj_Recipes(RecipeID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES dbProj_User(UserID) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- 4. Create Ratings Table (Needed for functionality)
+CREATE TABLE IF NOT EXISTS dbProj_Ratings (
+    RatingID INT AUTO_INCREMENT PRIMARY KEY,
+    RecipeID INT NOT NULL,
+    UserID INT NOT NULL,
+    RatingValue INT NOT NULL CHECK (RatingValue BETWEEN 1 AND 5),
+    FOREIGN KEY (RecipeID) REFERENCES dbProj_Recipes(RecipeID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES dbProj_User(UserID) ON DELETE CASCADE,
+    UNIQUE KEY unique_rating (RecipeID, UserID)
+) ENGINE=InnoDB;
+
+-- 5. Stored Procedure for Search (Requirement: At least one stored procedure)
+DELIMITER //
+CREATE PROCEDURE sp_SearchRecipes(IN searchTerm VARCHAR(255))
+BEGIN
+    SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, u.Username, AVG(rt.RatingValue) as AvgRating
+    FROM dbProj_Recipes r
+    JOIN dbProj_User u ON r.UserID = u.UserID
+    LEFT JOIN dbProj_Ratings rt ON r.RecipeID = rt.RecipeID
+    WHERE r.Status = 'Published' 
+    AND (r.Title LIKE CONCAT('%', searchTerm, '%') OR r.Ingredients LIKE CONCAT('%', searchTerm, '%'))
+    GROUP BY r.RecipeID
+    ORDER BY r.CreatedAt DESC;
+END //
+DELIMITER ;
+
+-- 6. Insert Test Data (Admin: admin123, Creator: chef123, Viewer: user123)
+-- Passwords are hashed 'password123'
+INSERT INTO dbProj_User (Username, Email, Password, Role) VALUES 
+('admin', 'admin@example.com', '$2y$10$Mh6jCKLeI3Sd5H37W1GGleMKCw0K.t0eCVj17iIu91xITRLz0B3hW', 'Admin'),
+('chef_john', 'john@example.com', '$2y$10$Mh6jCKLeI3Sd5H37W1GGleMKCw0K.t0eCVj17iIu91xITRLz0B3hW', 'Creator'),
+('user_jane', 'jane@example.com', '$2y$10$Mh6jCKLeI3Sd5H37W1GGleMKCw0K.t0eCVj17iIu91xITRLz0B3hW', 'Viewer');
+
+-- Insert Sample Recipes
+INSERT INTO dbProj_Recipes (UserID, Title, Description, Ingredients, Instructions, Category) VALUES 
+(2, 'Spaghetti Carbonara', 'Classic Italian pasta dish.', 'Spaghetti, Eggs, Pecorino, Guanciale', 'Boil pasta, mix eggs and cheese...', 'Italian'),
+(2, 'Chicken Curry', 'Spicy and delicious curry.', 'Chicken, Curry Paste, Coconut Milk', 'Fry paste, add chicken, simmer...', 'Asian');
