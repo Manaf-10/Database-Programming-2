@@ -17,7 +17,7 @@ if ($creatorId <= 0) {
 
 $role = 'Creator';
 $stmt = $mysqli->prepare(
-    'SELECT r.Title, r.Category, r.Status, r.Views, r.CreatedAt
+    'SELECT r.Title, r.Category, r.Status, r.Views, r.CreatedAt, r.Category
      FROM dbProj_Recipes r
      JOIN dbProj_Users u ON r.UserID = u.UserID
      WHERE r.UserID = ? AND u.Role = ?

@@ -5,30 +5,105 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df16d028-80ba-443b-af14-e37ed7fa3e38" name="Changes" comment="home page">
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/1780323869_san-sebastian-cheesecake-10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Black-Bean-Vegan-Burger-Recipe.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Egg-Omelette-SQ.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/FNK_PAN-FRIED-SALMON-H_s4x3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Pink_Ombre_Pancakes_Ha_0565.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Quinoa-Chickpea-Lemon-Dill-Salad.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Reel_and_Brand_-_September_2021_-_Sarah_Stierch_05.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Vegetable-Stir-Fry-SQ-500x500.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/beef-lasagne.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/caesar-salad-500x500.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/classic-apple-pie-recipe-10-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/creamy-chicken-alfredo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/crispy-fish-tacos-FT-RECIPE0825-98c4bc48f8f44b4e88b9c8e6d69faad3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/easy_chocolate_cake_31070_16x9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/fruit-tart-secondary-65ef54d7e8efd.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/homemade-tomato-soup-recipe.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/actions/fetch_creator_recipes.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/actions/fetch_creator_recipes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/actions/fetch_recipes.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/actions/fetch_recipes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/assets/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/assets/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpProject2/assets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/assets/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/includes/recipe_card.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/includes/recipe_card.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/recipe_view.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/recipe_view.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/Labs/composer.json</pharConfigPath>
     <execution />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "alnoohy"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Manaf-10/Database-Programming-2.git",
+    "accountId": "819cf6a2-ff50-4833-8d25-7e5c78d3c7f9"
+  }
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$USER_HOME$/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.1_Microsoft.Winget.Source_8wekyb3d8bbwe/php.exe" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="3EYLSOhACv4rT7jVdayrmOPTAWR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "alnoohy",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/Users/mohoh/PhpstormProjects/Database-Programming-2/PhpProject2/uploads",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mohoh\PhpstormProjects\Database-Programming-2\PhpProject2\uploads" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mohoh\PhpstormProjects\Database-Programming-2\PhpProject2\uploads" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-PS-261.23567.149" />
+        <option value="bundled-php-predefined-a98d8de5180a-022fa7b8ab75-com.jetbrains.php.sharedIndexes-PS-261.23567.149" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="home page">
       <option name="closed" value="true" />
@@ -38,8 +113,27 @@
       <option name="project" value="LOCAL" />
       <updated>1780338639486</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="home page">
+      <option name="closed" value="true" />
+      <created>1780340837473</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1780340837473</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="df16d028-80ba-443b-af14-e37ed7fa3e38" name="Changes" comment="home page" />
+      <created>1780350560053</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1780350560053</updated>
+      <workItem from="1780350561877" duration="1245000" />
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="home page" />

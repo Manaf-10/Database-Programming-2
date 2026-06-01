@@ -1,4 +1,3 @@
-/* 1. VARIABLES & RESET (KEEPING YOUR ORIGINAL COLORS) */
 :root {
     --primary-blue: #007bff;
     --dark-blue: #0056b3;
@@ -15,9 +14,9 @@
     padding: 0;
 }
 
-/* FIX: Sticky Footer Body Setup */
 html, body {
     height: 100%;
+    margin: 0;
 }
 
 body {
@@ -27,15 +26,14 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
-    flex-direction: column; /* Needed for sticky footer */
+    flex-direction: column;
 }
 
-/* FIX: Push content to fill space */
 main {
     flex: 1 0 auto;
+    padding-bottom: 80px;
 }
 
-/* 2. NAVIGATION BAR (YOUR ORIGINAL DESIGN) */
 .navbar {
     background-color: #198754 !important; /* bg-success matching your header.php */
     padding: 1rem 0;
@@ -49,7 +47,6 @@ main {
     color: white !important;
 }
 
-/* 3. HERO & SEARCH (YOUR ORIGINAL DESIGN) */
 .hero-panel {
     background: linear-gradient(135deg, #e8f7ef 0%, #f8fbff 100%);
     border: 1px solid #d8eee1;
@@ -57,60 +54,158 @@ main {
     padding: 40px;
 }
 
-/* 4. RECIPE CARDS (POLISHED FIXES) */
-.recipe-card {
-    background: var(--white);
-    border-radius: 10px;
+/* Latest Recipes Section Panel Container */
+#latest-recipes-section {
+    background-color: var(--white);
+    border: 1px solid #e2ebd5;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.04);
     overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s;
-    border: none;
+}
+
+.latest-toggle-wrapper {
+    background-color: #fcfdfe;
+    border-bottom: 1px solid #f1f5ee;
+}
+
+.latest-toggle {
+    transition: background-color 0.15s ease-in-out;
+    background-color: transparent;
+}
+
+.latest-toggle:hover,
+.latest-toggle:focus {
+    background-color: #f3f9f5;
+    box-shadow: none;
+    outline: none;
+}
+
+.latest-toggle .toggle-chevron {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #198754;
+}
+
+/* Rotate Chevron indicator based on Bootstrap collapse state */
+.latest-toggle[aria-expanded="false"] .toggle-chevron {
+    transform: rotate(-90deg);
+}
+
+.latest-toggle[aria-expanded="true"] .toggle-chevron {
+    transform: rotate(0deg);
+}
+
+/* Smooth opacity fade transition on AJAX loading instead of sudden flash */
+#all-recipes-container {
+    transition: opacity 0.15s ease-in-out;
+}
+
+#all-recipes-container.is-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Card Container */
+.recipe-card {
+    background: var(--white, #ffffff);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.05));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f1f1f1;
 }
 
 .recipe-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.card-img-top {
+/* Image wrapper helper */
+.recipe-card-img-wrapper {
     height: 200px;
-    object-fit: cover;
-}
-
-.recipe-image-container {
-    height: 400px;
     width: 100%;
-    background-color: #f1f1f1;
-    border: 1px solid #dee2e6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 8px;
+    background-color: #f7f8f9;
 }
 
-.recipe-image-container img {
+.recipe-card-img-wrapper img {
     height: 100%;
     width: 100%;
     object-fit: cover;
 }
 
-/* FIX: 2-line description with ellipsis */
+/* Typography Hierarchy & Text Contrast */
+.recipe-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.3;
+}
+
+.recipe-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.recipe-date {
+    font-size: 0.85rem;
+    color: #8c96a0;
+}
+
+.recipe-rating {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.recipe-rating .rating-value {
+    color: #e67e22; /* High-contrast golden orange for readability */
+}
+
+/* Category Badge Styling */
+.recipe-category {
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.badge-category {
+    background-color: #e2f0d9; /* Subtle green to complement the header theme */
+    color: #2e7d32;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* 2-line clamping with fallback min-height */
 .recipe-description {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 3rem;
     font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 15px;
+    color: #555555;
+    line-height: 1.4;
+    height: 2.8rem; /* Keeps description area consistent for alignment */
+    margin-bottom: 0;
 }
 
-/* FIX: Centered 80% Wide Button */
+/* Full Width Button within the padded card-body */
 .view-recipe-btn {
-    width: 80% !important;
-    margin: 10px auto;
+    width: 100% !important;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: #2f855a; /* Forest green shade to match your site header */
+    border: none;
+    text-align: center;
     display: block;
+    transition: background-color 0.2s ease;
+}
+
+.view-recipe-btn:hover {
+    background-color: #225e3f;
 }
 
 .creator-search-results {
@@ -148,7 +243,6 @@ main {
     font-style: italic;
 }
 
-/* 5. AUTHENTICATION FORMS (KEEPING YOUR ORIGINAL DESIGN) */
 .star {
     color: gray;
     cursor: pointer;
@@ -189,11 +283,113 @@ main {
     transition: transform 0.2s;
 }
 
-/* 6. FOOTER (FIXED STICKY POSITION) */
 .site-footer {
     background-color: #333;
     color: white;
-    padding: 24px 0;
-    flex-shrink: 0; /* Prevents footer from squishing */
+    padding: 30px 0;
+    flex-shrink: 0;
     width: 100%;
+}
+
+/* Container for the stars */
+.star-rating {
+    display: inline-flex;
+    justify-content: center;
+    gap: 4px;             /* Consistent spacing between stars */
+    font-size: 1.75rem;   /* Adjust size to fit your card layout */
+    user-select: none;    /* Prevents highlighting the star text on click */
+}
+
+/* Individual Star styling */
+.star {
+    cursor: pointer;
+    color: #c1c8ce;       /* Grey color for unfilled state */
+    transition: color 0.15s ease-in-out, transform 0.1s ease;
+    display: inline-block;
+}
+
+/* Filled Star styling */
+.star.filled {
+    color: #ffca28;       /* Warm yellow/gold for filled state */
+}
+
+/* Optional hover interaction styling */
+.star:hover {
+    transform: scale(1.15); /* Subtle scale effect when hovering */
+}
+
+/* Recipe View Layout Styles */
+.recipe-detail-meta {
+    font-size: 0.95rem;
+    color: #5c636a;
+}
+
+.meta-divider {
+    color: #ced4da;
+    margin: 0 8px;
+}
+
+.status-update-panel {
+    background-color: #fefcf3;
+    border: 1px solid #f6ecbe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: inline-block;
+}
+
+/* Image Fit & Container Rules */
+.recipe-image-container {
+    width: 100%;
+    max-height: 480px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2ebd5;
+    background-color: #f1f3f4;
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.05);
+}
+
+.recipe-image-container img {
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+    object-fit: cover; /* Ensures aspect ratio remains undistorted */
+    display: block;
+}
+
+.no-image-placeholder {
+    font-style: italic;
+    font-weight: 500;
+}
+
+.recipe-video-wrapper video {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.recipe-instructions-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.section-title {
+    font-weight: 700;
+    color: #198754;
+    font-size: 1.2rem;
+    border-left: 4px solid #198754;
+    padding-left: 10px;
+}
+
+.recipe-text-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #495057;
+}
+
+.extra-small-date {
+    font-size: 0.75rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
 }

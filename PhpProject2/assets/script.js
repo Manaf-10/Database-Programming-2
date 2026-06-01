@@ -1,4 +1,13 @@
 $(document).ready(function() {
+    // Save user collapse preference to localStorage when manually toggled
+    $(document).on('shown.bs.collapse', '#latestRecipesCollapse', function() {
+        localStorage.setItem('latestRecipesCollapsed', 'false');
+    });
+
+    $(document).on('hidden.bs.collapse', '#latestRecipesCollapse', function() {
+        localStorage.setItem('latestRecipesCollapsed', 'true');
+    });
+
     function updateSortButtons(activeSort) {
         $('.sort-btn').each(function() {
             const isActive = $(this).data('sort') === activeSort;
@@ -24,14 +33,40 @@ $(document).ready(function() {
                 latestToggle.setAttribute('aria-expanded', 'false');
             }
         } else {
-            collapse.show();
-            if (latestToggle) {
-                latestToggle.setAttribute('aria-expanded', 'true');
+            // Respect the user's saved preference when on page 1
+            const isCollapsed = localStorage.getItem('latestRecipesCollapsed') === 'true';
+            if (isCollapsed) {
+                collapse.hide();
+                if (latestToggle) {
+                    latestToggle.setAttribute('aria-expanded', 'false');
+                }
+            } else {
+                collapse.show();
+                if (latestToggle) {
+                    latestToggle.setAttribute('aria-expanded', 'true');
+                }
             }
         }
     }
 
-    function loadRecipes(page) {
+    // Apply the saved preference immediately on initial page load if on page 1
+    const initialPage = parseInt($('#all-recipes-container').attr('data-current-page'), 10) || 1;
+    if (initialPage === 1) {
+        const savedCollapsedState = localStorage.getItem('latestRecipesCollapsed');
+        if (savedCollapsedState === 'true') {
+            const latestCollapse = document.getElementById('latestRecipesCollapse');
+            const latestToggle = document.querySelector('.latest-toggle');
+            if (latestCollapse && window.bootstrap) {
+                const collapse = bootstrap.Collapse.getOrCreateInstance(latestCollapse, { toggle: false });
+                collapse.hide();
+                if (latestToggle) {
+                    latestToggle.setAttribute('aria-expanded', 'false');
+                }
+            }
+        }
+    }
+
+    function loadRecipes(page, pushState = true) {
         const $form = $('#recipe-search-form');
         const $container = $('#all-recipes-container');
 
@@ -51,8 +86,10 @@ $(document).ready(function() {
             success: function(html) {
                 $container.html(html).attr('data-current-page', page);
                 updateLatestVisibility(page);
-                const newUrl = 'index.php?' + $.param(query);
-                window.history.pushState({ page: page }, '', newUrl);
+                if (pushState) {
+                    const newUrl = 'index.php?' + $.param(query);
+                    window.history.pushState({ page: page }, '', newUrl);
+                }
             },
             error: function() {
                 $container.html('<div class="alert alert-danger">Unable to load recipes.</div>');
@@ -75,9 +112,13 @@ $(document).ready(function() {
 
     $('.sort-btn').on('click', function() {
         const sort = $(this).data('sort');
+        const currentSort = $('#sort-input').val();
 
-        $('#sort-input').val(sort);
-        updateSortButtons(sort);
+        // If the clicked button is already active, clear it (unselect). Otherwise, set it.
+        const targetSort = (currentSort === sort) ? '' : sort;
+
+        $('#sort-input').val(targetSort);
+        updateSortButtons(targetSort);
         loadRecipes(1);
     });
 
@@ -181,7 +222,22 @@ $(document).ready(function() {
     });
 
     window.addEventListener('popstate', function() {
-        window.location.reload();
+        const params = new URLSearchParams(window.location.search);
+        const $form = $('#recipe-search-form');
+
+        if ($form.length) {
+            $form.find('input[name="search"]').val(params.get('search') || '');
+            $form.find('input[name="creator"]').val(params.get('creator') || '');
+            $form.find('select[name="category"]').val(params.get('category') || '');
+            $form.find('input[name="date_from"]').val(params.get('date_from') || '');
+
+            const sort = params.get('sort') || '';
+            $('#sort-input').val(sort);
+            updateSortButtons(sort);
+        }
+
+        const page = parseInt(params.get('page'), 10) || 1;
+        loadRecipes(page, false);
     });
 
     function paintStars($container, rating) {
@@ -215,7 +271,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 const cssClass = response.success ? 'alert-success' : 'alert-danger';
-                $('#rating-msg').html('<div class="alert ' + cssClass + '">' + response.message + '</div>');
+                $('#rating-msg').html('<div class="alert ' + cssClass + ' mt-2 mb-0">' + response.message + '</div>');
                 if (response.success) {
                     const $container = $('#rating-container');
                     $container.data('user-rating', response.rating);
@@ -223,7 +279,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                $('#rating-msg').html('<div class="alert alert-danger">Error connecting to server.</div>');
+                $('#rating-msg').html('<div class="alert alert-danger mt-2 mb-0">Error connecting to server.</div>');
             }
         });
     });

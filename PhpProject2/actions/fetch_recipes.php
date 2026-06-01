@@ -70,7 +70,7 @@ if ($page > $totalPages) {
 }
 
 $sql = "SELECT r.RecipeID, r.Title, r.ImagePath, r.Description, r.Views, r.CreatedAt AS CreatedAt, u.Username,
-               COALESCE(AVG(rt.RatingValue), 0) AS AvgRating,
+               COALESCE(AVG(rt.RatingValue), 0) AS AvgRating,r.Category,
                COUNT(rt.RatingID) AS RatingCount
         FROM dbProj_Recipes r
         JOIN dbProj_Users u ON r.UserID = u.UserID
