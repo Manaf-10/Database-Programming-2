@@ -6,16 +6,26 @@ if (!checkRole('Admin')) {
     exit;
 }
 
-$popularStmt = $mysqli->prepare('SELECT Title, Views FROM dbProj_Recipes ORDER BY Views DESC LIMIT 5');
-$popularStmt->execute();
-$popularRecipes = $popularStmt->get_result();
+$popularRecipes = $mysqli->query('CALL sp_GetPopularRecipes()');
 
-$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_User ORDER BY CreatedAt DESC');
+if ($popularRecipes) {
+    $popularRows = $popularRecipes->fetch_all(MYSQLI_ASSOC);
+    $popularRecipes->free();
+    while ($mysqli->more_results() && $mysqli->next_result()) {
+        if ($extraResult = $mysqli->store_result()) {
+            $extraResult->free();
+        }
+    }
+} else {
+    $popularRows = [];
+}
+
+$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_Users ORDER BY CreatedAt DESC');
 
 $creatorReport = null;
 if (!empty($_GET['creator_id'])) {
     $creatorId = (int) $_GET['creator_id'];
-    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_User u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
+    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_Users u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
     $stmt->bind_param('i', $creatorId);
     $stmt->execute();
     $creatorReport = $stmt->get_result();
@@ -29,12 +39,12 @@ if (!empty($_GET['creator_id'])) {
         <div class="card h-100">
             <div class="card-header">Most Popular Recipes</div>
             <ul class="list-group list-group-flush">
-                <?php while ($row = $popularRecipes->fetch_assoc()): ?>
+                <?php foreach ($popularRows as $row): ?>
                     <li class="list-group-item d-flex justify-content-between">
                         <span><?php echo htmlspecialchars($row['Title']); ?></span>
                         <span><?php echo (int) $row['Views']; ?> views</span>
                     </li>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </ul>
         </div>
     </div>

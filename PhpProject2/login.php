@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = trim($_POST['password'] ?? '');
 
     if ($username !== '' && $password !== '') {
-        $stmt = $mysqli->prepare('SELECT UserID, Username, Password, Role FROM dbProj_User WHERE Username = ?');
+        $stmt = $mysqli->prepare('SELECT UserID, Username, Password, Role FROM dbProj_Users WHERE Username = ?');
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();

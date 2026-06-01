@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Invalid role selected.';
     } else {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $mysqli->prepare('INSERT INTO dbProj_User (Username, Email, Password, Role) VALUES (?, ?, ?, ?)');
+        $stmt = $mysqli->prepare('INSERT INTO dbProj_Users (Username, Email, Password, Role) VALUES (?, ?, ?, ?)');
         $stmt->bind_param('ssss', $username, $email, $hashedPassword, $role);
 
         if ($stmt->execute()) {

@@ -13,13 +13,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $instructions = trim($_POST['instructions'] ?? '');
     $category = trim($_POST['category'] ?? '');
     $status = $_POST['status'] ?? 'Draft';
+    $allowedCategories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Vegan', 'Snacks', 'Drinks'];
     $allowedStatuses = ['Draft', 'Published'];
     $userId = (int) $_SESSION['user_id'];
     $imagePath = 'default.jpg';
     $videoPath = null;
 
-    if ($title === '' || $description === '' || $ingredients === '' || $instructions === '') {
-        $error = 'Title, description, ingredients, and instructions are required.';
+    if ($title === '' || $description === '' || $ingredients === '' || $instructions === '' || $category === '') {
+        $error = 'Title, description, ingredients, instructions, and category are required.';
+    } elseif (!in_array($category, $allowedCategories, true)) {
+        $error = 'Invalid category selected.';
     } elseif (!in_array($status, $allowedStatuses, true)) {
         $error = 'Invalid status.';
     } else {
@@ -88,7 +91,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Category</label>
-                            <input type="text" name="category" class="form-control">
+                            <select name="category" class="form-select" required>
+                                <option value="" disabled selected>Select a Category</option>
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                                <option value="Dessert">Dessert</option>
+                                <option value="Vegan">Vegan</option>
+                                <option value="Snacks">Snacks</option>
+                                <option value="Drinks">Drinks</option>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Status</label>

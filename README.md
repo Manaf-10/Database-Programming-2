@@ -25,7 +25,7 @@ Database connection:
 
 The PHP code now matches the table and column names from `sql codes.txt`:
 
-- `dbProj_User`
+- `dbProj_Users`
 - `dbProj_Recipes`
 - `dbProj_Comments`
 - `dbProj_Ratings`
@@ -33,13 +33,13 @@ The PHP code now matches the table and column names from `sql codes.txt`:
 - Recipe image column: `ImagePath`
 - Recipe description column: `Description`
 
-Old names such as `dbProj_users`, `dbProj_recipes`, `RoleID`, `ShortDescription`, and `MainImage` were removed from the PHP code.
+Old names such as `dbProj_User`, `dbProj_users`, `dbProj_recipes`, `RoleID`, `ShortDescription`, and `MainImage` were removed from the PHP code.
 
 ## Project Task Status
 
 | Task | Requirement | Status | Notes |
 | --- | --- | --- | --- |
-| 1.1 | Sign-up functionality | Finished | `register.php` inserts into `dbProj_User`. |
+| 1.1 | Sign-up functionality | Finished | `register.php` inserts into `dbProj_Users`. |
 | 1.1 | Login functionality | Finished | `login.php` verifies password hashes and redirects by role. |
 | 1.1 | Session management | Finished | Shared session logic is in `includes/header.php`. |
 | 1.1 | JavaScript validation | Finished | Registration includes browser-side validation. |
@@ -60,7 +60,7 @@ Old names such as `dbProj_users`, `dbProj_recipes`, `RoleID`, `ShortDescription`
 | 2 | Pagination if content > 10 records | Not finished | Recipe listing still needs pagination. |
 | 2 | Secure database usage | Finished | Main queries now use prepared statements. |
 | 3 | ERD | Not finished | Add ERD screenshot/PDF. |
-| 3 | Stored procedure | Finished | `sql codes.txt` contains `sp_SearchRecipes`. |
+| 3 | Stored procedure | Finished | `sql codes.txt` contains `sp_SearchRecipes` and `sp_GetPopularRecipes`. |
 | 3 | Minimum test dataset | Partly finished | SQL has sample users and recipes, but more records are needed for the required dataset size. |
 | 4 | Advanced feature 1 | Finished | Prepared statements are used. |
 | 4 | Advanced feature 2 | Finished | AJAX/jQuery rating is implemented. |
