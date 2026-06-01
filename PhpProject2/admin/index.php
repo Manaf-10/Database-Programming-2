@@ -140,7 +140,8 @@ if ($creatorId > 0) {
                                    id="creator-search-input"
                                    class="form-control"
                                    value="<?php echo htmlspecialchars($selectedCreatorName); ?>"
-                                   data-search-url="../actions/search_creators.php">
+                                   data-search-url="../actions/search_creators.php"
+                                   data-recipes-url="../actions/fetch_creator_recipes.php">
                             <input type="hidden" name="creator_id" id="creator-id-input" value="<?php echo $creatorId > 0 ? (int) $creatorId : ''; ?>">
                             <button class="btn btn-success" type="submit">View</button>
                         </div>
@@ -148,19 +149,19 @@ if ($creatorId > 0) {
                     </div>
                 </form>
 
-                <?php if ($creatorReport): ?>
-                    <div class="table-responsive">
-                        <table class="table table-striped align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Recipe</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                    <th>Views</th>
-                                    <th>Created</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Recipe</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Views</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody id="creator-recipes-body">
+                            <?php if ($creatorReport): ?>
                                 <?php while ($row = $creatorReport->fetch_assoc()): ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($row['Title']); ?></td>
@@ -170,12 +171,14 @@ if ($creatorId > 0) {
                                         <td><?php echo date('M d, Y', strtotime($row['CreatedAt'])); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php elseif ($selectedCreatorName !== ''): ?>
-                    <div class="alert alert-info mb-0">No creator content found.</div>
-                <?php endif; ?>
+                            <?php elseif ($selectedCreatorName !== ''): ?>
+                                <tr><td colspan="5" class="text-muted fst-italic">No creator content found.</td></tr>
+                            <?php else: ?>
+                                <tr><td colspan="5" class="text-muted fst-italic">Select a creator to view recipes.</td></tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -118,12 +118,14 @@ main {
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    z-index: 1050;
-    background: #fff;
-    border: 1px solid #dee2e6;
+    z-index: 1000;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     overflow: hidden;
+    cursor: pointer;
 }
 
 .creator-search-item {
@@ -137,7 +139,7 @@ main {
 
 .creator-search-item:hover,
 .creator-search-item:focus {
-    background: #e8f7ef;
+    background-color: #f8f9fa;
 }
 
 .creator-search-empty {

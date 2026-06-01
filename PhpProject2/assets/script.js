@@ -83,6 +83,35 @@ $(document).ready(function() {
 
     let creatorSearchTimer = null;
 
+    function loadCreatorRecipes(creatorId) {
+        const $input = $('#creator-search-input');
+        const recipesUrl = $input.data('recipes-url');
+        const $body = $('#creator-recipes-body');
+
+        if (!recipesUrl || !$body.length) {
+            return;
+        }
+
+        if (!creatorId) {
+            $body.html('<tr><td colspan="5" class="text-muted fst-italic">Select a creator to view recipes.</td></tr>');
+            return;
+        }
+
+        $body.html('<tr><td colspan="5" class="text-muted fst-italic">Loading recipes...</td></tr>');
+
+        $.ajax({
+            url: recipesUrl,
+            type: 'GET',
+            data: { creator_id: creatorId },
+            success: function(html) {
+                $body.html(html);
+            },
+            error: function() {
+                $body.html('<tr><td colspan="5" class="text-danger">Unable to load creator recipes.</td></tr>');
+            }
+        });
+    }
+
     $('#creator-search-input').on('input', function() {
         const $input = $(this);
         const term = $input.val().trim();
@@ -137,6 +166,12 @@ $(document).ready(function() {
         $('#creator-search-input').val($(this).data('username'));
         $('#creator-id-input').val($(this).data('id'));
         $('#creator-search-results').addClass('d-none').empty();
+        loadCreatorRecipes($(this).data('id'));
+    });
+
+    $('.creator-search-form').on('submit', function(event) {
+        event.preventDefault();
+        loadCreatorRecipes($('#creator-id-input').val());
     });
 
     $(document).on('click', function(event) {
