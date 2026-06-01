@@ -6,16 +6,18 @@ if (!checkRole('Admin')) {
     exit;
 }
 
-$popularStmt = $mysqli->prepare('SELECT Title, Views FROM dbProj_Recipes ORDER BY Views DESC LIMIT 5');
+$popularStmt = $mysqli->prepare("SELECT Title, Views FROM dbProj_Recipes WHERE Status = 'Published' ORDER BY Views DESC LIMIT 5");
 $popularStmt->execute();
 $popularRecipes = $popularStmt->get_result();
 
-$users = $mysqli->query('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_Userss ORDER BY CreatedAt DESC');
+$usersStmt = $mysqli->prepare('SELECT UserID, Username, Email, Role, CreatedAt FROM dbProj_Users ORDER BY CreatedAt DESC');
+$usersStmt->execute();
+$users = $usersStmt->get_result();
 
 $creatorReport = null;
 if (!empty($_GET['creator_id'])) {
     $creatorId = (int) $_GET['creator_id'];
-    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_User u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
+    $stmt = $mysqli->prepare('SELECT r.Title, r.Status, r.CreatedAt, u.Username FROM dbProj_Recipes r JOIN dbProj_Users u ON r.UserID = u.UserID WHERE r.UserID = ? ORDER BY r.CreatedAt DESC');
     $stmt->bind_param('i', $creatorId);
     $stmt->execute();
     $creatorReport = $stmt->get_result();
@@ -29,12 +31,12 @@ if (!empty($_GET['creator_id'])) {
         <div class="card h-100">
             <div class="card-header">Most Popular Recipes</div>
             <ul class="list-group list-group-flush">
-                <?php foreach ($popularRows as $row): ?>
+                <?php while ($row = $popularRecipes->fetch_assoc()): ?>
                     <li class="list-group-item d-flex justify-content-between">
                         <span><?php echo htmlspecialchars($row['Title']); ?></span>
                         <span><?php echo (int) $row['Views']; ?> views</span>
                     </li>
-                <?php endforeach; ?>
+                <?php endwhile; ?>
             </ul>
         </div>
     </div>

@@ -33,11 +33,7 @@ The PHP code now matches the table and column names from `sql codes.txt`:
 - Recipe image column: `ImagePath`
 - Recipe description column: `Description`
 
-<<<<<<< HEAD
 Old names such as `dbProj_User`, `dbProj_users`, `dbProj_recipes`, `RoleID`, `ShortDescription`, and `MainImage` were removed from the PHP code.
-=======
-Old names such as `dbProj_Users`, `dbProj_recipes`, `RoleID`, `ShortDescription`, and `MainImage` were removed from the PHP code.
->>>>>>> 9f7a98f9999d009256fc4a0ad4efb3e61eee2465
 
 ## Project Task Status
 
