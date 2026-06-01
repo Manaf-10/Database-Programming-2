@@ -113,6 +113,39 @@ main {
     display: block;
 }
 
+.creator-search-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.creator-search-item {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 0;
+    background: #fff;
+    text-align: left;
+}
+
+.creator-search-item:hover,
+.creator-search-item:focus {
+    background: #e8f7ef;
+}
+
+.creator-search-empty {
+    padding: 10px 12px;
+    color: #6c757d;
+    font-style: italic;
+}
+
 /* 5. AUTHENTICATION FORMS (KEEPING YOUR ORIGINAL DESIGN) */
 .star {
     color: gray;

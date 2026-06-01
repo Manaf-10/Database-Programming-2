@@ -81,6 +81,70 @@ $(document).ready(function() {
         loadRecipes(1);
     });
 
+    let creatorSearchTimer = null;
+
+    $('#creator-search-input').on('input', function() {
+        const $input = $(this);
+        const term = $input.val().trim();
+        const searchUrl = $input.data('search-url');
+        const $results = $('#creator-search-results');
+
+        $('#creator-id-input').val('');
+        clearTimeout(creatorSearchTimer);
+
+        if (!searchUrl || term.length < 1) {
+            $results.addClass('d-none').empty();
+            return;
+        }
+
+        creatorSearchTimer = setTimeout(function() {
+            $.ajax({
+                url: searchUrl,
+                type: 'GET',
+                dataType: 'json',
+                data: { term: term },
+                success: function(creators) {
+                    $results.empty();
+
+                    if (!Array.isArray(creators) || creators.length === 0) {
+                        $results
+                            .removeClass('d-none')
+                            .html('<div class="creator-search-empty">No creators found</div>');
+                        return;
+                    }
+
+                    creators.forEach(function(creator) {
+                        $('<button>', {
+                            type: 'button',
+                            class: 'creator-search-item',
+                            text: creator.username
+                        })
+                            .attr('data-id', creator.id)
+                            .attr('data-username', creator.username)
+                            .appendTo($results);
+                    });
+
+                    $results.removeClass('d-none');
+                },
+                error: function() {
+                    $results.addClass('d-none').empty();
+                }
+            });
+        }, 180);
+    });
+
+    $(document).on('click', '.creator-search-item', function() {
+        $('#creator-search-input').val($(this).data('username'));
+        $('#creator-id-input').val($(this).data('id'));
+        $('#creator-search-results').addClass('d-none').empty();
+    });
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.creator-search-form').length) {
+            $('#creator-search-results').addClass('d-none');
+        }
+    });
+
     window.addEventListener('popstate', function() {
         window.location.reload();
     });
