@@ -85,11 +85,24 @@ $(document).ready(function() {
         window.location.reload();
     });
 
+    function paintStars($container, rating) {
+        $container.find('.star').each(function() {
+            $(this).toggleClass('filled', parseInt($(this).data('value'), 10) <= rating);
+        });
+    }
+
+    $('.star-rating').each(function() {
+        const savedRating = parseInt($(this).data('user-rating'), 10) || 0;
+        paintStars($(this), savedRating);
+    });
+
     $('.star').hover(function() {
-        $(this).prevAll().addBack().css('color', 'gold');
-        $(this).nextAll().css('color', 'gray');
+        const $container = $(this).closest('.star-rating');
+        paintStars($container, parseInt($(this).data('value'), 10) || 0);
     }, function() {
-        $('.star').css('color', 'gray');
+        const $container = $(this).closest('.star-rating');
+        const savedRating = parseInt($container.data('user-rating'), 10) || 0;
+        paintStars($container, savedRating);
     });
 
     $('.star').click(function() {
@@ -104,6 +117,11 @@ $(document).ready(function() {
             success: function(response) {
                 const cssClass = response.success ? 'alert-success' : 'alert-danger';
                 $('#rating-msg').html('<div class="alert ' + cssClass + '">' + response.message + '</div>');
+                if (response.success) {
+                    const $container = $('#rating-container');
+                    $container.data('user-rating', response.rating);
+                    paintStars($container, parseInt(response.rating, 10) || 0);
+                }
             },
             error: function() {
                 $('#rating-msg').html('<div class="alert alert-danger">Error connecting to server.</div>');

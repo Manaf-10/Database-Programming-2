@@ -44,8 +44,29 @@ if (!$recipe) {
     exit;
 }
 
-$imagePath = $recipe['ImagePath'] ?: 'default.jpg';
+$imagePath = trim($recipe['ImagePath'] ?? '');
+$hasImage = $imagePath !== '' && $imagePath !== 'default.jpg';
 $canEdit = isLoggedIn() && ((int) $_SESSION['user_id'] === (int) $recipe['UserID'] || checkRole('Admin'));
+$currentUserRating = 0;
+
+if (isLoggedIn()) {
+    $currentUserId = (int) $_SESSION['user_id'];
+    $ratingStmt = $mysqli->prepare('SELECT RatingValue FROM dbProj_Ratings WHERE RecipeID = ? AND UserID = ?');
+    $ratingStmt->bind_param('ii', $id, $currentUserId);
+    $ratingStmt->execute();
+    $ratingRow = $ratingStmt->get_result()->fetch_assoc();
+    $currentUserRating = $ratingRow ? (int) $ratingRow['RatingValue'] : 0;
+}
+
+function renderRecipeContent($content) {
+    $content = trim((string) $content);
+
+    if ($content === '') {
+        return '<p class="text-muted fst-italic">No content posted here</p>';
+    }
+
+    return '<p>' . nl2br(htmlspecialchars($content)) . '</p>';
+}
 ?>
 
 <div class="row">
@@ -71,7 +92,13 @@ $canEdit = isLoggedIn() && ((int) $_SESSION['user_id'] === (int) $recipe['UserID
                 <button type="submit" name="update_status" class="btn btn-sm btn-warning">Update</button>
             </form>
         <?php endif; ?>
-        <img src="uploads/<?php echo htmlspecialchars($imagePath); ?>" class="img-fluid rounded mb-4 recipe-main-image" alt="Recipe Image">
+        <div class="recipe-image-container mb-4">
+            <?php if ($hasImage): ?>
+                <img src="uploads/<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo htmlspecialchars($recipe['Title']); ?>">
+            <?php else: ?>
+                <span class="text-muted">No image provided</span>
+            <?php endif; ?>
+        </div>
 
         <?php if (!empty($recipe['VideoPath'])): ?>
             <video controls class="w-100 rounded mb-4">
@@ -79,14 +106,20 @@ $canEdit = isLoggedIn() && ((int) $_SESSION['user_id'] === (int) $recipe['UserID
             </video>
         <?php endif; ?>
 
-        <h4>Description</h4>
-        <p><?php echo nl2br(htmlspecialchars($recipe['Description'] ?? '')); ?></p>
+        <section class="mb-4">
+            <h4 class="mb-3">Description</h4>
+            <?php echo renderRecipeContent($recipe['Description'] ?? ''); ?>
+        </section>
 
-        <h4>Ingredients</h4>
-        <p><?php echo nl2br(htmlspecialchars($recipe['Ingredients'] ?? '')); ?></p>
+        <section class="mb-4">
+            <h4 class="mb-3">Ingredients</h4>
+            <?php echo renderRecipeContent($recipe['Ingredients'] ?? ''); ?>
+        </section>
 
-        <h4>Instructions</h4>
-        <p><?php echo nl2br(htmlspecialchars($recipe['Instructions'] ?? '')); ?></p>
+        <section class="mb-4">
+            <h4 class="mb-3">Instructions</h4>
+            <?php echo renderRecipeContent($recipe['Instructions'] ?? ''); ?>
+        </section>
     </div>
 
     <div class="col-md-4">
@@ -94,7 +127,7 @@ $canEdit = isLoggedIn() && ((int) $_SESSION['user_id'] === (int) $recipe['UserID
             <div class="card-header">Rate this Recipe</div>
             <div class="card-body text-center">
                 <?php if (isLoggedIn()): ?>
-                    <div class="star-rating" id="rating-container">
+                    <div class="star-rating" id="rating-container" data-user-rating="<?php echo (int) $currentUserRating; ?>">
                         <span data-value="1" class="star">&#9733;</span>
                         <span data-value="2" class="star">&#9733;</span>
                         <span data-value="3" class="star">&#9733;</span>

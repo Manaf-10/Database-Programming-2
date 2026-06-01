@@ -25,6 +25,7 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    min-height: 100vh;
     display: flex;
     flex-direction: column; /* Needed for sticky footer */
 }
@@ -75,6 +76,24 @@ main {
     object-fit: cover;
 }
 
+.recipe-image-container {
+    height: 400px;
+    width: 100%;
+    background-color: #f1f1f1;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.recipe-image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 /* FIX: 2-line description with ellipsis */
 .recipe-description {
     display: -webkit-box;
@@ -95,6 +114,16 @@ main {
 }
 
 /* 5. AUTHENTICATION FORMS (KEEPING YOUR ORIGINAL DESIGN) */
+.star {
+    color: gray;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.star.filled {
+    color: gold;
+}
+
 .auth-container {
     display: flex;
     justify-content: center;
