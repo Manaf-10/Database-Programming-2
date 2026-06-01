@@ -19,6 +19,13 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 .navbar-brand {
@@ -36,6 +43,24 @@ body {
 .card-img-top {
     height: 200px;
     object-fit: cover;
+}
+
+.recipe-description {
+    display: -webkit-box;
+    min-height: 3rem;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.view-recipe-btn {
+    width: 80%;
+}
+
+#all-recipes-container.is-loading {
+    opacity: 0.65;
+    pointer-events: none;
 }
 
 .recipe-main-image {
@@ -271,8 +296,9 @@ body {
 .site-footer {
     background-color: #333;
     color: white;
-    padding: 40px 0 20px;
-    margin-top: 50px;
+    padding: 24px 0;
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 .footer-grid {

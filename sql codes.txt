@@ -59,11 +59,7 @@ CREATE TABLE IF NOT EXISTS dbProj_Ratings (
 DELIMITER //
 CREATE PROCEDURE sp_GetPopularRecipes()
 BEGIN
-<<<<<<< HEAD
-    SELECT r.Title, r.Category, r.Views, u.Username 
-=======
     SELECT r.Title, r.Category, r.Views, u.Username
->>>>>>> 9f7a98f9999d009256fc4a0ad4efb3e61eee2465
     FROM dbProj_Recipes r
     JOIN dbProj_Users u ON r.UserID = u.UserID
     ORDER BY r.Views DESC
@@ -78,11 +74,7 @@ BEFORE DELETE ON dbProj_Recipes
 FOR EACH ROW
 BEGIN
     -- This helps prove you are handling content management professionally
-<<<<<<< HEAD
-    INSERT INTO dbProj_Comments (RecipeID, UserID, CommentText) 
-=======
     INSERT INTO dbProj_Comments (RecipeID, UserID, CommentText)
->>>>>>> 9f7a98f9999d009256fc4a0ad4efb3e61eee2465
     VALUES (OLD.RecipeID, 1, 'System: Content removed by Administrator.');
 END //
 DELIMITER ;
@@ -92,20 +84,12 @@ DELIMITER ;
 -- Password for all is: password123
 -- ---------------------------------------------------------
 
-<<<<<<< HEAD
-INSERT IGNORE INTO dbProj_Users (UserID, Username, Email, Password, Role) VALUES 
-=======
 INSERT IGNORE INTO dbProj_Users (UserID, Username, Email, Password, Role) VALUES
->>>>>>> 9f7a98f9999d009256fc4a0ad4efb3e61eee2465
 (1, 'admin_user', 'admin@poly.bh', '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', 'Admin'),
 (2, 'chef_mario', 'mario@test.com', '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', 'Creator'),
 (3, 'baker_amy', 'amy@test.com', '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', 'Creator');
 
-<<<<<<< HEAD
-INSERT IGNORE INTO dbProj_Recipes (Title, UserID, Category, Views, Status, Description) VALUES 
-=======
 INSERT IGNORE INTO dbProj_Recipes (Title, UserID, Category, Views, Status, Description) VALUES
->>>>>>> 9f7a98f9999d009256fc4a0ad4efb3e61eee2465
 ('Beef Lasagna', 2, 'Dinner', 150, 'Published', 'Classic beef lasagna'),
 ('Fruit Tart', 3, 'Dessert', 210, 'Published', 'Fresh berry tart'),
 ('Chocolate Cake', 3, 'Dessert', 300, 'Published', 'Rich chocolate fudge'),
