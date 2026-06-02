@@ -4,19 +4,38 @@ require_once 'includes/db_connect.php';
 require_once 'includes/Header.php';
 
 $searchTerm = trim($_GET['search'] ?? '');
-$creator = trim($_GET['creator'] ?? '');
+$selectedCreators = $_GET['creator'] ?? [];
+if (!is_array($selectedCreators)) {
+    $selectedCreators = ($selectedCreators !== '') ? [$selectedCreators] : [];
+}
 $category = trim($_GET['category'] ?? '');
 $dateFrom = trim($_GET['date_from'] ?? '');
+$dateTo = trim($_GET['date_to'] ?? '');
 $sort = $_GET['sort'] ?? '';
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $latestOpen = $page === 1;
 
+// 1. Fetch Categories for Dropdown
 $categories = [];
 $categoryStmt = $mysqli->prepare("SELECT DISTINCT Category FROM dbProj_Recipes WHERE Category IS NOT NULL AND Category <> '' ORDER BY Category");
 $categoryStmt->execute();
 $categoryResult = $categoryStmt->get_result();
 while ($cat = $categoryResult->fetch_assoc()) {
     $categories[] = $cat['Category'];
+}
+
+// 2. Fetch Active Creators based on Published Work (independent of Role modifications)
+$creatorsList = [];
+$creatorsStmt = $mysqli->prepare("
+    SELECT DISTINCT u.UserID, u.Username 
+    FROM dbProj_Users u
+    JOIN dbProj_Recipes r ON u.UserID = r.UserID
+    ORDER BY u.Username ASC
+");
+$creatorsStmt->execute();
+$creatorsResult = $creatorsStmt->get_result();
+while ($user = $creatorsResult->fetch_assoc()) {
+    $creatorsList[] = $user;
 }
 
 $latestStmt = $mysqli->prepare(
@@ -36,30 +55,84 @@ $latestRecipes = $latestStmt->get_result();
 ?>
 
     <section class="hero-panel mb-4">
-        <h1>Discover Delicious Recipes</h1>
-        <form id="recipe-search-form" action="index.php" method="GET" class="row g-2 mt-3">
+        <h1 class="h3 mb-3 fw-bold text-success-emphasis">Discover Delicious Recipes</h1>
+        <form id="recipe-search-form" action="index.php" method="GET" class="mt-2">
             <input type="hidden" name="sort" id="sort-input" value="<?php echo htmlspecialchars($sort); ?>">
-            <div class="col-md-3">
-                <input type="text" name="search" class="form-control" placeholder="Title or ingredient" value="<?php echo htmlspecialchars($searchTerm); ?>">
+
+            <div class="row g-3">
+                <!-- Title or Ingredient -->
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label small fw-bold text-muted">Keywords</label>
+                    <input type="text" name="search" class="form-control" placeholder="Title or ingredient" value="<?php echo htmlspecialchars($searchTerm); ?>">
+                </div>
+
+                <!-- Category -->
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small fw-bold text-muted">Category</label>
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?php echo htmlspecialchars($cat); ?>" <?php echo $category === $cat ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($cat); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Creators Checkbox Dropdown -->
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small fw-bold text-muted">Creators</label>
+                    <div class="dropdown">
+                        <button class="btn btn-white w-100 text-start d-flex justify-content-between align-items-center form-select"
+                                type="button"
+                                id="creatorDropdownMenu"
+                                data-bs-toggle="dropdown"
+                                data-bs-auto-close="outside"
+                                aria-expanded="false">
+                            <span id="creator-dropdown-label" class="text-truncate">All Creators</span>
+                        </button>
+                        <ul class="dropdown-menu creator-checkbox-menu w-100 p-2 shadow-sm" aria-labelledby="creatorDropdownMenu">
+                            <?php if (empty($creatorsList)): ?>
+                                <li class="text-muted p-2 small italic text-center">No creators found</li>
+                            <?php else: ?>
+                                <?php foreach ($creatorsList as $c): ?>
+                                    <li class="creator-checkbox-item p-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input creator-checkbox"
+                                                   type="checkbox"
+                                                   name="creator[]"
+                                                   value="<?php echo htmlspecialchars($c['Username']); ?>"
+                                                   id="creator_<?php echo $c['UserID']; ?>"
+                                                    <?php echo in_array($c['Username'], $selectedCreators) ? 'checked' : ''; ?>>
+                                            <label class="form-check-label w-100 small" for="creator_<?php echo $c['UserID']; ?>">
+                                                <?php echo htmlspecialchars($c['Username']); ?>
+                                            </label>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Date From -->
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small fw-bold text-muted">Published From</label>
+                    <input type="date" name="date_from" class="form-control" aria-label="Published From" value="<?php echo htmlspecialchars($dateFrom); ?>">
+                </div>
+
+                <!-- Date To -->
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small fw-bold text-muted">Published To</label>
+                    <input type="date" name="date_to" class="form-control" aria-label="Published To" value="<?php echo htmlspecialchars($dateTo); ?>">
+                </div>
             </div>
-            <div class="col-md-2">
-                <input type="text" name="creator" class="form-control" placeholder="Creator" value="<?php echo htmlspecialchars($creator); ?>">
-            </div>
-            <div class="col-md-3">
-                <select name="category" class="form-select">
-                    <option value="">All Categories</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?php echo htmlspecialchars($cat); ?>" <?php echo $category === $cat ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($cat); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <input type="date" name="date_from" class="form-control" aria-label="Published Since" value="<?php echo htmlspecialchars($dateFrom); ?>">
-            </div>
-            <div class="col-md-2 d-grid">
-                <button class="btn btn-success" type="submit">Search</button>
+
+            <!-- Action Button Row -->
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="btn btn-success px-4" type="submit">Search Recipes</button>
+                </div>
             </div>
         </form>
     </section>

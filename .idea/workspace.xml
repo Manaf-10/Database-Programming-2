@@ -5,8 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df16d028-80ba-443b-af14-e37ed7fa3e38" name="Changes" comment="changes, in CSS, script, desgin overall and main functionalities">
+      <change afterPath="$PROJECT_DIR$/PhpProject2/admin/delete_recipe_by_admin.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/admin/delete_user.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/11662_3-2_1920-1280.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/1780424384_1780323869_san-sebastian-cheesecake-10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/5-Minute-Creamy-Hummus-Featured.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Caprese_Salad_Recipe_9-500x500.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Chicken-Quesadilla-Square.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Lemonade-Recipe-10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Matcha_Lateh.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/Spaghetti-Carbonara-Plated-500x500.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/SpendWithPennies-Mixed-Berry-Smoothie-24.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/banana-bread_650x433_wm.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/beefTacos.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/chocolate-chia-pudding-6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/classic_garlic_bread_84954_16x9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/easy-french-toast-1200-feature-2025.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/gourmet-mushroom-risotto.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PhpProject2/uploads/green-bean-tofu-stir.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/actions/fetch_creator_recipes.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/actions/fetch_creator_recipes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/actions/fetch_recipes.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/actions/fetch_recipes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/actions/search_creators.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/actions/search_creators.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/assets/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/assets/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/assets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/assets/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpProject2/creator/add_recipe.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/creator/add_recipe.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PhpProject2/includes/db_connect.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/includes/db_connect.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/creator/edit_recipe.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/creator/edit_recipe.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/creator/my_recipes.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/creator/my_recipes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/includes/Header.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/includes/Header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpProject2/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpProject2/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780351861124</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="changes, in CSS, script, desgin overall and main functionalities">
+      <option name="closed" value="true" />
+      <created>1780408854486</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1780408854486</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

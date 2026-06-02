@@ -2,17 +2,7 @@
 session_start();
 require_once '../includes/db_connect.php';
 
-header('Content-Type: application/json');
-
-function isLoggedIn() {
-    return isset($_SESSION['user_id']);
-}
-
-function checkRole($required_role) {
-    return isLoggedIn() && isset($_SESSION['role']) && $_SESSION['role'] === $required_role;
-}
-
-if (!checkRole('Admin')) {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Admin') {
     http_response_code(403);
     echo json_encode([]);
     exit;
@@ -25,18 +15,21 @@ if ($term === '') {
     exit;
 }
 
-$like = '%' . $term . '%';
-$stmt = $mysqli->prepare("SELECT UserID, Username FROM dbProj_Users WHERE Role = 'Creator' AND Username LIKE ? ORDER BY Username LIMIT 8");
-$stmt->bind_param('s', $like);
+$search = "%" . $term . "%";
+
+// Queries matches across all registered users regardless of their current role
+$stmt = $mysqli->prepare('SELECT UserID AS id, Username AS username FROM dbProj_Users WHERE Username LIKE ? LIMIT 10');
+$stmt->bind_param('s', $search);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$creators = [];
+$users = [];
 while ($row = $result->fetch_assoc()) {
-    $creators[] = [
-        'id' => (int) $row['UserID'],
-        'username' => $row['Username'],
+    $users[] = [
+        'id' => (int) $row['id'],
+        'username' => $row['username']
     ];
 }
 
-echo json_encode($creators);
+header('Content-Type: application/json');
+echo json_encode($users);

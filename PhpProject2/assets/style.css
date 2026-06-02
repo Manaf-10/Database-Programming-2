@@ -35,11 +35,11 @@ main {
 }
 
 .navbar {
-    background-color: #198754 !important; /* bg-success matching your header.php */
-    padding: 1rem 0;
+    background-color: #198754 !important;
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .navbar-brand {
@@ -47,11 +47,111 @@ main {
     color: white !important;
 }
 
+.nav-btn-login {
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    color: #ffffff !important;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.nav-btn-login:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+/* Rounded Register Button Solid */
+.nav-btn-register {
+    background-color: #ffffff;
+    color: #198754 !important; /* Matches your header's success green */
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn-register:hover {
+    background-color: #f1f3f5;
+    transform: translateY(-1px);
+}
+
+/* Logged-in Username badge */
+.user-badge-dropdown {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff !important;
+    border-radius: 30px;
+    padding: 6px 16px !important;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+}
+
+.user-badge-dropdown:hover,
+.user-badge-dropdown:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Dropdown menu formatting inside navbar */
+.navbar .dropdown-menu {
+    border-radius: 10px;
+}
+
+.navbar .dropdown-item {
+    font-size: 0.95rem;
+    padding: 8px 20px;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* --- Hero & Layout Panels --- */
 .hero-panel {
     background: linear-gradient(135deg, #e8f7ef 0%, #f8fbff 100%);
     border: 1px solid #d8eee1;
     border-radius: 12px;
     padding: 40px;
+}
+
+/* Form layout adjustment helper */
+.hero-panel .form-label {
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+}
+
+/* Ensure the Creators dropdown button mimics standard form-select fields */
+#creatorDropdownMenu.form-select {
+    background-color: var(--white) !important;
+    border: 1px solid #ced4da !important;
+    color: var(--text-color);
+    box-shadow: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#creatorDropdownMenu.form-select:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+/* Custom Checkbox Dropdown styling for creator multi-select */
+.creator-checkbox-menu {
+    max-height: 250px;
+    overflow-y: auto;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.creator-checkbox-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.creator-checkbox-item .form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
 }
 
 /* Latest Recipes Section Panel Container */
@@ -438,4 +538,95 @@ main {
     color: #ffffff;
     background-color: #dc3545;
     border-color: #dc3545;
+}
+
+.pagination .page-link {
+    color: #198754;
+    border-color: #dee2e6;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    color: #146c43;
+    background-color: #e8f7ef;
+    border-color: #badbcc;
+}
+
+.pagination .page-link:focus {
+    color: #146c43;
+    background-color: #e8f7ef;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #198754;
+    border-color: #198754;
+    color: #ffffff;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #ffffff;
+    border-color: #dee2e6;
+
+}
+
+/* Custom Admin Report Tabs Styling */
+.admin-report-tabs {
+    gap: 8px;
+    border-bottom: 1px solid #e2ebd5 !important;
+}
+
+.admin-report-tabs .nav-link {
+    font-weight: 700 !important;
+    font-size: 0.9rem;
+    color: #5c636a !important;
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+    padding: 8px 12px;
+    background: transparent !important;
+    transition: all 0.15s ease-in-out;
+}
+
+.admin-report-tabs .nav-link:hover {
+    color: #198754 !important;
+    border-bottom-color: #badbcc !important;
+}
+
+.admin-report-tabs .nav-link.active {
+    color: #198754 !important;
+    border-bottom-color: #198754 !important;
+}
+
+.border-0-last:last-child {
+    border-bottom: none !important;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table th {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+/* Prevent layout breaking & scrollbars */
+.text-nowrap {
+    white-space: nowrap !important;
+}
+
+/* Action alignment helpers */
+.action-btn-group {
+    display: inline-flex;
+    gap: 4px;
+    flex-wrap: nowrap;
 }
