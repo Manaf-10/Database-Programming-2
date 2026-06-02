@@ -1,78 +1,109 @@
-<?php 
-include('includes/header.php'); 
+<?php
+require_once 'includes/db_connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    // Task 1.1: Modern Hashing
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
-    $role = 3; // Default 'Visitor' role
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    // Task 2: Secure Prepared Statement
-    $stmt = $conn->prepare("INSERT INTO dbProj_users (Username, Email, Password, RoleID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $username, $email, $password, $role);
-    
-    if ($stmt->execute()) {
-        echo "<script>alert('Account created! Please login.'); window.location='login.php';</script>";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+    $confirm = trim($_POST['confirm_password'] ?? '');
+    $role = $_POST['role'] ?? 'Viewer';
+    $allowedRoles = ['Viewer', 'Creator'];
+
+    if ($username === '' || $email === '' || $password === '') {
+        $error = 'All fields are required.';
+    } elseif (strlen($username) < 3) {
+        $error = 'Username must be at least 3 characters.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
+    } elseif (strlen($password) < 6) {
+        $error = 'Password must be at least 6 characters.';
+    } elseif ($password !== $confirm) {
+        $error = 'Passwords do not match.';
+    } elseif (!in_array($role, $allowedRoles, true)) {
+        $error = 'Invalid role selected.';
     } else {
-        // Handling duplicates
-        $error = "Registration failed. Username or Email might already be taken.";
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $mysqli->prepare('INSERT INTO dbProj_Users (Username, Email, Password, Role) VALUES (?, ?, ?, ?)');
+        $stmt->bind_param('ssss', $username, $email, $hashedPassword, $role);
+
+        if ($stmt->execute()) {
+            header('Location: login.php');
+            exit;
+        }
+
+        $error = 'Username or email already exists.';
     }
 }
+
+require_once 'includes/Header.php';
 ?>
 
-<div class="auth-container">
-    <form action="register.php" method="POST" class="styled-form" onsubmit="return validateRegister()">
-        <h2>Join RecipeShare</h2>
-        <p class="subtitle">Create an account to start sharing</p>
-
-        <?php if(isset($error)) echo "<p style='color:red; font-size:0.8rem;'>$error</p>"; ?>
-        
-        <div class="input-wrapper">
-            <input type="text" id="reg_user" name="username" placeholder="Username" required>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Create Account</div>
+            <div class="card-body">
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                <?php endif; ?>
+                <form action="register.php" method="POST" onsubmit="return validateRegisterForm()">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Register as</label>
+                        <select name="role" class="form-select">
+                            <option value="Viewer">Viewer</option>
+                            <option value="Creator">Creator</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Register</button>
+                </form>
+            </div>
         </div>
-
-        <div class="input-wrapper">
-            <input type="email" id="reg_email" name="email" placeholder="Email Address" required>
-        </div>
-        
-        <div class="input-wrapper">
-            <input type="password" id="reg_pass" name="password" placeholder="Password" required>
-        </div>
-
-        <div class="input-wrapper">
-            <input type="password" id="reg_confirm" placeholder="Confirm Password" required>
-        </div>
-        
-        <button type="submit" class="btn-gradient">Sign Up</button>
-        
-        <div class="form-footer">
-            <p>Already a member? <a href="login.php">Login here</a></p>
-        </div>
-    </form>
+    </div>
 </div>
 
 <script>
-// Task 1.1: JavaScript Validation
-function validateRegister() {
-    const user = document.getElementById('reg_user').value;
-    const pass = document.getElementById('reg_pass').value;
-    const confirm = document.getElementById('reg_confirm').value;
-    
-    if (user.length < 4) {
-        alert("Username must be at least 4 characters.");
+function validateRegisterForm() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+
+    if (username.length < 3) {
+        alert('Username must be at least 3 characters.');
         return false;
     }
-    if (pass.length < 6) {
-        alert("Password must be at least 6 characters.");
+
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters.');
         return false;
     }
-    if (pass !== confirm) {
-        alert("Passwords do not match!");
+
+    if (password !== confirm) {
+        alert('Passwords do not match.');
         return false;
     }
+
     return true;
 }
 </script>
 
-<?php include('includes/footer.php'); ?>
+<?php require_once 'includes/Footer.php'; ?>

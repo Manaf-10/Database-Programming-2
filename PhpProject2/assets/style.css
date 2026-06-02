@@ -1,4 +1,3 @@
-/* 1. Global Reset & Variables */
 :root {
     --primary-blue: #007bff;
     --dark-blue: #0056b3;
@@ -15,150 +14,251 @@
     padding: 0;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+main {
+    flex: 1 0 auto;
+    padding-bottom: 80px;
 }
 
-/* 2. Navigation Bar - Task 2 */
 .navbar {
-    background-color: var(--primary-blue);
+    background-color: #198754 !important; /* bg-success matching your header.php */
     padding: 1rem 0;
-    color: var(--white);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.navbar-brand {
+    font-weight: 700;
+    color: white !important;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: var(--white);
+.hero-panel {
+    background: linear-gradient(135deg, #e8f7ef 0%, #f8fbff 100%);
+    border: 1px solid #d8eee1;
+    border-radius: 12px;
+    padding: 40px;
 }
 
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    color: var(--white);
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-.nav-links a:hover {
-    color: var(--light-blue);
-}
-
-/* 3. Hero Section & Search - Task 1.3 */
-.hero {
-    background: linear-gradient(rgba(2, 136, 209, 0.8), rgba(2, 136, 209, 0.8));
-    padding: 100px 0;
-    text-align: center; /* Centers the H1 text */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centers the form horizontally */
-    justify-content: center;
-    color: white;
-}
-
-.search-bar {
-    margin-top: 30px;
-    display: flex;
-    width: 100%;
-    max-width: 600px; /* Limits width so it doesn't stretch too far */
-    gap: 0; /* Joins input and button */
-}
-
-.search-bar input {
-    flex: 1; /* Makes input take up available space */
-    padding: 15px;
-    border: none;
-    border-radius: 25px 0 0 25px; /* Rounded left corners */
-    font-size: 16px;
-}
-
-.search-bar button {
-    padding: 15px 30px;
-    background-color: #004d40; /* Contrast color for visibility */
-    color: white;
-    border: none;
-    border-radius: 0 25px 25px 0; /* Rounded right corners */
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* 4. Recipe Grid & Cards - Task 1.2 */
-.section-title {
-    margin: 40px 0 20px;
-    text-align: center;
-    color: var(--dark-blue);
-}
-
-.recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    margin-bottom: 50px;
-}
-
-.recipe-card {
-    background: var(--white);
-    border-radius: 10px;
+/* Latest Recipes Section Panel Container */
+#latest-recipes-section {
+    background-color: var(--white);
+    border: 1px solid #e2ebd5;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.04);
     overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s;
+}
+
+.latest-toggle-wrapper {
+    background-color: #fcfdfe;
+    border-bottom: 1px solid #f1f5ee;
+}
+
+.latest-toggle {
+    transition: background-color 0.15s ease-in-out;
+    background-color: transparent;
+}
+
+.latest-toggle:hover,
+.latest-toggle:focus {
+    background-color: #f3f9f5;
+    box-shadow: none;
+    outline: none;
+}
+
+.latest-toggle .toggle-chevron {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #198754;
+}
+
+/* Rotate Chevron indicator based on Bootstrap collapse state */
+.latest-toggle[aria-expanded="false"] .toggle-chevron {
+    transform: rotate(-90deg);
+}
+
+.latest-toggle[aria-expanded="true"] .toggle-chevron {
+    transform: rotate(0deg);
+}
+
+/* Smooth opacity fade transition on AJAX loading instead of sudden flash */
+#all-recipes-container {
+    transition: opacity 0.15s ease-in-out;
+}
+
+#all-recipes-container.is-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Card Container */
+.recipe-card {
+    background: var(--white, #ffffff);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.05));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f1f1f1;
 }
 
 .recipe-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.recipe-card img {
-    width: 100%;
+/* Image wrapper helper */
+.recipe-card-img-wrapper {
     height: 200px;
+    width: 100%;
+    background-color: #f7f8f9;
+}
+
+.recipe-card-img-wrapper img {
+    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 
-.card-body {
-    padding: 20px;
+/* Typography Hierarchy & Text Contrast */
+.recipe-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.3;
 }
 
-.view-btn {
+.recipe-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.recipe-date {
+    font-size: 0.85rem;
+    color: #8c96a0;
+}
+
+.recipe-rating {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.recipe-rating .rating-value {
+    color: #e67e22; /* High-contrast golden orange for readability */
+}
+
+/* Category Badge Styling */
+.recipe-category {
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.badge-category {
+    background-color: #e2f0d9; /* Subtle green to complement the header theme */
+    color: #2e7d32;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
     display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: var(--primary-blue);
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
 }
 
-/* 5. Authentication Forms - Task 1.1 */
+/* 2-line clamping with fallback min-height */
+.recipe-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.9rem;
+    color: #555555;
+    line-height: 1.4;
+    height: 2.8rem; /* Keeps description area consistent for alignment */
+    margin-bottom: 0;
+}
+
+/* Full Width Button within the padded card-body */
+.view-recipe-btn {
+    width: 100% !important;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: #2f855a; /* Forest green shade to match your site header */
+    border: none;
+    text-align: center;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.view-recipe-btn:hover {
+    background-color: #225e3f;
+}
+
+.creator-search-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.creator-search-item {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 0;
+    background: #fff;
+    text-align: left;
+}
+
+.creator-search-item:hover,
+.creator-search-item:focus {
+    background-color: #f8f9fa;
+}
+
+.creator-search-empty {
+    padding: 10px 12px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.star {
+    color: gray;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.star.filled {
+    color: gold;
+}
+
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh; /* Keeps it centered vertically */
-    padding: 20px;
+    min-height: 80vh;
+    padding: 40px 20px;
 }
 
 .styled-form {
@@ -168,106 +268,174 @@ body {
     box-shadow: 0 10px 25px rgba(0, 123, 255, 0.1);
     width: 100%;
     max-width: 400px;
-    text-align: center;
 }
 
-.subtitle {
-    color: #666;
-    margin-bottom: 25px;
-    font-size: 0.9rem;
-}
-
-/* Modern Input Styling */
-.input-wrapper input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border: 2px solid #e3f2fd;
-    border-radius: 10px;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.input-wrapper input:focus {
-    border-color: #007bff;
-}
-
-/* The New Gradient Button Shape */
 .btn-gradient {
     width: 100%;
     padding: 14px;
     border: none;
-    border-radius: 30px; /* Fully rounded sides */
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border-radius: 30px;
+    background: linear-gradient(135deg, #198754 0%, #146c43 100%);
     color: white;
-    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+    transition: transform 0.2s;
 }
 
-.btn-gradient:hover {
-    transform: translateY(-2px); /* Lifts the button slightly */
-    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
-    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
-}
-
-.btn-gradient:active {
-    transform: translateY(0);
-}
-
-.form-footer {
-    margin-top: 20px;
-    font-size: 0.85rem;
-}
-
-.form-footer a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* 6. Footer - Task 2 */
 .site-footer {
     background-color: #333;
     color: white;
-    padding: 40px 0 20px;
-    margin-top: 50px;
+    padding: 30px 0;
+    flex-shrink: 0;
+    width: 100%;
 }
 
-.footer-grid {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.footer-bottom {
-    text-align: center;
-    margin-top: 30px;
-    border-top: 1px solid #444;
-    padding-top: 20px;
-    font-size: 0.9rem;
-}
-
-/* Ensure the auth container can grow for longer forms */
-.auth-container {
-    display: flex;
+/* Container for the stars */
+.star-rating {
+    display: inline-flex;
     justify-content: center;
-    align-items: center;
-    min-height: 90vh; /* Slightly taller for the register form */
-    padding: 40px 20px;
+    gap: 4px;             /* Consistent spacing between stars */
+    font-size: 1.75rem;   /* Adjust size to fit your card layout */
+    user-select: none;    /* Prevents highlighting the star text on click */
 }
 
-/* Ensure consistent text for the footer link */
-.form-footer p {
-    margin-top: 15px;
-    color: #555;
+/* Individual Star styling */
+.star {
+    cursor: pointer;
+    color: #c1c8ce;       /* Grey color for unfilled state */
+    transition: color 0.15s ease-in-out, transform 0.1s ease;
+    display: inline-block;
 }
 
-/* Form transition for a smooth professional feel */
-.styled-form {
-    transition: all 0.3s ease-in-out;
+/* Filled Star styling */
+.star.filled {
+    color: #ffca28;       /* Warm yellow/gold for filled state */
+}
+
+/* Optional hover interaction styling */
+.star:hover {
+    transform: scale(1.15); /* Subtle scale effect when hovering */
+}
+
+/* Recipe View Layout Styles */
+.recipe-detail-meta {
+    font-size: 0.95rem;
+    color: #5c636a;
+}
+
+.meta-divider {
+    color: #ced4da;
+    margin: 0 8px;
+}
+
+.status-update-panel {
+    background-color: #fefcf3;
+    border: 1px solid #f6ecbe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: inline-block;
+}
+
+/* Image Fit & Container Rules */
+.recipe-image-container {
+    width: 100%;
+    max-height: 480px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2ebd5;
+    background-color: #f1f3f4;
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.05);
+}
+
+.recipe-image-container img {
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+    object-fit: cover; /* Ensures aspect ratio remains undistorted */
+    display: block;
+}
+
+.no-image-placeholder {
+    font-style: italic;
+    font-weight: 500;
+}
+
+.recipe-video-wrapper video {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.recipe-instructions-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.section-title {
+    font-weight: 700;
+    color: #198754;
+    font-size: 1.2rem;
+    border-left: 4px solid #198754;
+    padding-left: 10px;
+}
+
+.recipe-text-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #495057;
+}
+
+.extra-small-date {
+    font-size: 0.75rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+}
+
+/* Custom spacing and shapes for table action buttons */
+.action-btn-group {
+    display: inline-flex;
+    gap: 6px; /* Spacing between the buttons */
+    vertical-align: middle;
+}
+
+.action-btn-group .btn {
+    border-radius: 6px !important; /* Force individual rounded corners */
+    font-weight: 500;
+    font-size: 0.875rem; /* Standard btn-sm size */
+    padding: 0.25rem 0.5rem; /* Fine-tune individual button inner padding */
+    transition: all 0.15s ease-in-out;
+}
+
+/* Custom override rules for easily editing colors */
+.action-btn-group .btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+.action-btn-group .btn-outline-primary:hover {
+    color: #ffffff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.action-btn-group .btn-outline-warning {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+.action-btn-group .btn-outline-warning:hover {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.action-btn-group .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+.action-btn-group .btn-outline-danger:hover {
+    color: #ffffff;
+    background-color: #dc3545;
+    border-color: #dc3545;
 }

@@ -1,56 +1,69 @@
-<?php 
-include('includes/header.php'); 
+<?php
+require_once 'includes/db_connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    // 1. Prepare the statement to find the user (Task 2: Secure DB usage)
-    $stmt = $conn->prepare("SELECT UserID, Password, RoleID FROM dbProj_users WHERE Username = ?");
-    $stmt->bind_param("s", $user);
-    $stmt->execute();
-    $result = $stmt->get_result();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    if ($row = $result->fetch_assoc()) {
-        // 2. Verify the encrypted password (Task 1.1)
-        if (password_verify($pass, $row['Password'])) {
-            // 3. Set Session variables for Role-based access
-            $_SESSION['user_id'] = $row['UserID'];
-            $_SESSION['role_id'] = $row['RoleID'];
-            
-            // Redirect to home page upon success
-            header("Location: index.php");
-            exit();
-        } else {
-            $error = "Invalid password.";
+    if ($username !== '' && $password !== '') {
+        $stmt = $mysqli->prepare('SELECT UserID, Username, Password, Role FROM dbProj_Users WHERE Username = ?');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            if (password_verify($password, $row['Password'])) {
+                $_SESSION['user_id'] = $row['UserID'];
+                $_SESSION['username'] = $row['Username'];
+                $_SESSION['role'] = $row['Role'];
+
+                if ($row['Role'] === 'Admin') {
+                    header('Location: admin/index.php');
+                } elseif ($row['Role'] === 'Creator') {
+                    header('Location: creator/my_recipes.php');
+                } else {
+                    header('Location: index.php');
+                }
+                exit;
+            }
         }
+
+        $error = 'Invalid username or password.';
     } else {
-        $error = "User not found.";
+        $error = 'Username and password are required.';
     }
 }
+
+require_once 'includes/Header.php';
 ?>
 
-<div class="auth-container">
-    <form action="login.php" method="POST" class="styled-form">
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Log in to manage your recipes</p>
-        
-        <?php if(isset($error)) echo "<p style='color:red; font-size:0.8rem;'>$error</p>"; ?>
-        
-        <div class="input-wrapper">
-            <input type="text" name="username" placeholder="Username" required>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Login</div>
+            <div class="card-body">
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                <?php endif; ?>
+                <form action="login.php" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Login</button>
+                </form>
+            </div>
         </div>
-        
-        <div class="input-wrapper">
-            <input type="password" name="password" placeholder="Password" required>
-        </div>
-        
-        <button type="submit" class="btn-gradient">Enter Dashboard</button>
-        
-        <div class="form-footer">
-            <p>New here? <a href="register.php">Create an account</a></p>
-        </div>
-    </form>
+    </div>
 </div>
 
-<?php include('includes/footer.php'); ?>
+<?php require_once 'includes/Footer.php'; ?>

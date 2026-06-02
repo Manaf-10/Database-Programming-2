@@ -1,25 +1,11 @@
-<footer class="site-footer">
+    </main>
+    <footer class="site-footer text-center">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-info">
-                    <h4>RecipeShare</h4>
-                    <p>Building a community of food lovers at Bahrain Polytechnic.</p>
-                </div>
-                <div class="footer-links-group">
-                    <h5>Quick Links</h5>
-                    <ul>
-                        <li><a href="index.php">Browse Recipes</a></li>
-                        <li><a href="login.php">Contributor Login</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date("2026"); ?> IT8415 Project Group. All Rights Reserved.</p>
-            </div>
+            <p class="mb-0">&copy; 2026 Recipe Sharing Platform - IT8415 Project</p>
         </div>
     </footer>
-    
-    <!-- JavaScript for basic UI interaction or validation -->
-    <script src="assets/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="<?php echo $pathPrefix; ?>assets/script.js"></script>
 </body>
 </html>
