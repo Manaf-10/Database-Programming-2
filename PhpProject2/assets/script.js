@@ -49,6 +49,60 @@ $(document).ready(function() {
         }
     }
 
+    // Dynamic dropdown label behavior for checked creators
+    function updateCreatorDropdownLabel() {
+        const $checked = $('.creator-checkbox:checked');
+        const $label = $('#creator-dropdown-label');
+        if (!$label.length) return;
+
+        if ($checked.length === 0) {
+            $label.text('All Creators');
+        } else if ($checked.length === 1) {
+            $label.text($checked.first().parent().find('label').text().trim());
+        } else {
+            $label.text($checked.length + ' selected');
+        }
+    }
+
+    // Call update on page load (in case of browser refresh with inputs saved)
+    updateCreatorDropdownLabel();
+
+    $(document).on('change', '.creator-checkbox', function() {
+        updateCreatorDropdownLabel();
+    });
+
+    // Client-side image upload live preview & 1.5MB validation handler
+    $(document).on('change', '#recipe-image-input', function() {
+        const file = this.files[0];
+        if (file) {
+            const maxSize = 1.5 * 1024 * 1024; // 1.5 Megabytes in bytes
+
+            if (file.size > maxSize) {
+                alert('The selected image is too large. Please choose an image smaller than 1.5MB.');
+                $(this).val(''); // Reset file input
+
+                // Revert UI preview back to database state if a new selection was rejected
+                const currentSrc = $('#image-preview').attr('src');
+                if (!currentSrc || currentSrc.startsWith('data:')) {
+                    $('#image-preview-container').addClass('d-none');
+                    $('#image-preview').attr('src', '');
+                    $('#upload-placeholder-icon').removeClass('d-none');
+                    $('#upload-text-label').text('Upload cover image');
+                }
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#image-preview').attr('src', e.target.result);
+                $('#image-preview-container').removeClass('d-none');
+                $('#upload-placeholder-icon').addClass('d-none');
+                $('#upload-text-label').text('Replace cover image');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
     // Apply the saved preference immediately on initial page load if on page 1
     const initialPage = parseInt($('#all-recipes-container').attr('data-current-page'), 10) || 1;
     if (initialPage === 1) {
@@ -134,11 +188,11 @@ $(document).ready(function() {
         }
 
         if (!creatorId) {
-            $body.html('<tr><td colspan="5" class="text-muted fst-italic">Select a creator to view recipes.</td></tr>');
+            $body.html('<tr><td colspan="6" class="text-muted fst-italic text-center">Select a creator to view recipes.</td></tr>');
             return;
         }
 
-        $body.html('<tr><td colspan="5" class="text-muted fst-italic">Loading recipes...</td></tr>');
+        $body.html('<tr><td colspan="6" class="text-muted fst-italic text-center">Loading recipes...</td></tr>');
 
         $.ajax({
             url: recipesUrl,
@@ -148,7 +202,7 @@ $(document).ready(function() {
                 $body.html(html);
             },
             error: function() {
-                $body.html('<tr><td colspan="5" class="text-danger">Unable to load creator recipes.</td></tr>');
+                $body.html('<tr><td colspan="6" class="text-danger text-center">Unable to load creator recipes.</td></tr>');
             }
         });
     }
@@ -211,8 +265,14 @@ $(document).ready(function() {
     });
 
     $('.creator-search-form').on('submit', function(event) {
-        event.preventDefault();
-        loadCreatorRecipes($('#creator-id-input').val());
+        const creatorId = $('#creator-id-input').val();
+
+        // Only prevent default and load via AJAX if a valid autocomplete ID is populated.
+        // Otherwise, allow standard HTML submission so PHP can resolve the username lookup safely.
+        if (creatorId) {
+            event.preventDefault();
+            loadCreatorRecipes(creatorId);
+        }
     });
 
     $(document).on('click', function(event) {
@@ -230,6 +290,15 @@ $(document).ready(function() {
             $form.find('input[name="creator"]').val(params.get('creator') || '');
             $form.find('select[name="category"]').val(params.get('category') || '');
             $form.find('input[name="date_from"]').val(params.get('date_from') || '');
+            $form.find('input[name="date_to"]').val(params.get('date_to') || '');
+
+            // Restore creator dropdown checkboxes
+            $form.find('.creator-checkbox').prop('checked', false);
+            const creators = params.getAll('creator[]');
+            creators.forEach(function(val) {
+                $form.find('.creator-checkbox[value="' + val + '"]').prop('checked', true);
+            });
+            updateCreatorDropdownLabel();
 
             const sort = params.get('sort') || '';
             $('#sort-input').val(sort);
