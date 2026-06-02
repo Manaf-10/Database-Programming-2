@@ -1,0 +1,7 @@
+Options -Indexes
+ErrorDocument 400 /~u202303672/errors/400.php
+ErrorDocument 401 /~u202303672/errors/401.php
+ErrorDocument 403 /~u202303672/errors/403.php
+ErrorDocument 404 /~u202303672/errors/404.php
+ErrorDocument 500 /~u202303672/errors/500.php
+ErrorDocument 503 /~u202303672/errors/503.php
