@@ -393,3 +393,49 @@ main {
 .card-title {
     font-size: 1.1rem;
 }
+
+/* Custom spacing and shapes for table action buttons */
+.action-btn-group {
+    display: inline-flex;
+    gap: 6px; /* Spacing between the buttons */
+    vertical-align: middle;
+}
+
+.action-btn-group .btn {
+    border-radius: 6px !important; /* Force individual rounded corners */
+    font-weight: 500;
+    font-size: 0.875rem; /* Standard btn-sm size */
+    padding: 0.25rem 0.5rem; /* Fine-tune individual button inner padding */
+    transition: all 0.15s ease-in-out;
+}
+
+/* Custom override rules for easily editing colors */
+.action-btn-group .btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+.action-btn-group .btn-outline-primary:hover {
+    color: #ffffff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.action-btn-group .btn-outline-warning {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+.action-btn-group .btn-outline-warning:hover {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.action-btn-group .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+.action-btn-group .btn-outline-danger:hover {
+    color: #ffffff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
